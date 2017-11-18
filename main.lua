@@ -1,23 +1,19 @@
-local x = 100
-local dir = 1
+local hero_atlas
+local hero_sprite
+
+local rot = 0
 
 function love.load()
-    FPS = 1
+    -- Ensures pixel images have no filtering and will appear crisp if scaled up
+    love.graphics.setDefaultFilter('nearest')
+    hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
+    hero_sprite = love.graphics.newQuad(32, 16, 16, 16, hero_atlas:getDimensions(hero_atlas))
 end
 
-function love.update(dt)
-    FPS = 1 / dt
-
-    if x > 400 or x < 100 then
-        dir = dir * -1
-    end
-    x = x + (150 * dir * dt)
-    
+function love.update(dt)    
+    rot = rot + 3 * dt
 end
 
 function love.draw()
-    love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print('FPS: ' .. math.floor(FPS), 590, 0)
-    love.graphics.setColor(0, 191, 191, 255)
-    love.graphics.rectangle("fill", x , 100, 50, 50)
+    love.graphics.draw(hero_atlas, hero_sprite, 320, 180, rot, 4, 4, 8, 8)
 end
