@@ -1,4 +1,5 @@
-local Anim = require("animation")
+local Anim = require("Animation")
+local Sprite = require("Sprite")
 
 local hero_atlas
 local hero_sprite
@@ -12,17 +13,21 @@ local anim_frame = 1
 local num_frames = 6
 local x_offset
 
+local sprite
 local a = Anim(16, 32, 16, 16, 6, 6, 12)
 
 function love.load()
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
-    love.graphics.setDefaultFilter('nearest')
+    love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
-    hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
+    -- hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
+    sprite = Sprite(hero_atlas, 16, 16, 100, 100, 10, 10)
+    sprite:add_animation("walk", a)
+    sprite:animate("walk")
 end
 
 function love.update(dt)  
-    a:update(dt, hero_sprite)
+    sprite:update(dt, hero_sprite)
 
     -- anim_timer = anim_timer - dt
     -- if anim_timer <= 0 then
@@ -35,5 +40,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.draw(hero_atlas, hero_sprite, 320, 180, rot, 10, 10, 8, 8)
+    -- love.graphics.draw(hero_atlas, hero_sprite, 320, 180, rot, 10, 10, 8, 8)
+    sprite:draw()
 end

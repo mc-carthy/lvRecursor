@@ -14,15 +14,20 @@ function Anim:new(x_offset, y_offset, cell_width, cell_height, column_size, num_
 end
 
 function Anim:update(dt, quad)
+    if self.num_frames <= 1 then return end
     self.timer = self.timer - dt
     if self.timer <= 0 then
         self.timer = 1 / self.fps
         self.frame = self.frame + 1
         if self.frame > self.num_frames then self.frame = 1 end
-        self.offset.x = self.start_offset.x + (self.size.x * (self.frame - 1))
+        self.offset.x = self.start_offset.x + (self.size.x * ((self.frame - 1) % (self.column_size)))
         self.offset.y = self.start_offset.y + (self.size.y * math.floor((self.frame - 1) / self.column_size))
-        quad:setViewport(self.offset.x, self.offset.y, self.size.x, self.size.y)
+        self:set(quad)
     end
+end
+
+function Anim:set(quad)
+    quad:setViewport(self.offset.x, self.offset.y, self.size.x, self.size.y)
 end
 
 function Anim:reset()
