@@ -17,7 +17,9 @@ local sprite
 local idle = Anim(16, 16, 16, 16, 4, 4, 6)
 local walk = Anim(16, 32, 16, 16, 6, 6, 12)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
-local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
+local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
+
+local punchSfx = love.audio.newSource("assets/sfx/hits/hit01.wav", "static")
 
 function love.load()
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
@@ -46,7 +48,9 @@ function love.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-    if key == "space" then
+    if key == "space" and sprite.current_animation ~= "punch" then
         sprite:animate("punch")
+        love.audio.stop(punchSfx)        
+        love.audio.play(punchSfx)        
     end
 end
