@@ -35,17 +35,18 @@ end
 function love.update(dt)  
     sprite:update(dt, hero_sprite)
 
-    -- anim_timer = anim_timer - dt
-    -- if anim_timer <= 0 then
-    --     anim_frame = anim_frame + 1
-    --     anim_timer = 1 / anim_fps
-    --     if anim_frame > num_frames then anim_frame = 1 end
-    --     x_offset = 16 * anim_frame
-    --     hero_sprite:setViewport(x_offset, 32, 16, 16)
-    -- end  
+    if sprite.current_animation == "punch" and sprite:animation_finished() then
+        sprite:animate("idle")
+    end
 end
 
 function love.draw()
     -- love.graphics.draw(hero_atlas, hero_sprite, 320, 180, rot, 10, 10, 8, 8)
     sprite:draw()
+end
+
+function love.keypressed(key, scancode, isrepeat)
+    if key == "space" then
+        sprite:animate("punch")
+    end
 end

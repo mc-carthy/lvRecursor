@@ -4,8 +4,8 @@ local Vector2 = require("Vector2")
 
 function Anim:new(x_offset, y_offset, cell_width, cell_height, num_frames, column_size, fps, loop)
     self.fps = fps
-    self.timer = 1 / self.fps
-    self.frame = 1
+    -- self.timer = 1 / self.fps
+    -- self.frame = 1
     self.num_frames = num_frames
     self.column_size = column_size
     self.start_offset = Vector2(x_offset, y_offset)
@@ -13,7 +13,8 @@ function Anim:new(x_offset, y_offset, cell_width, cell_height, num_frames, colum
     self.size = Vector2(cell_width, cell_height)
     -- The below login allows loop to be an optional parameter with a default true value
     self.loop = (loop == nil) or loop
-    self.done = false
+    -- self.done = false
+    self:reset()
 end
 
 function Anim:update(dt, quad)
@@ -48,6 +49,8 @@ function Anim:reset()
     self.timer = 1 / self.fps
     self.frame = 1
     self.done = false
+    self.offset.x = self.start_offset.x
+    self.offset.y = self.start_offset.y
 end
 
 return Anim
