@@ -14,8 +14,10 @@ local num_frames = 6
 local x_offset
 
 local sprite
+local idle = Anim(16, 16, 16, 16, 4, 4, 6)
 local walk = Anim(16, 32, 16, 16, 6, 6, 12)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
+local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 
 function love.load()
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
@@ -23,9 +25,11 @@ function love.load()
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
     -- hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
     sprite = Sprite(hero_atlas, 16, 16, 100, 100, 10, 10)
+    sprite:add_animation("idle", idle)
     sprite:add_animation("walk", walk)
     sprite:add_animation("swim", swim)
-    sprite:animate("swim")
+    sprite:add_animation("punch", punch)
+    sprite:animate("idle")
 end
 
 function love.update(dt)  
