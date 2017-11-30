@@ -1,17 +1,8 @@
 local Anim = require("Animation")
 local Sprite = require("Sprite")
+local Key = require("Keyboard")
 
 local hero_atlas
-local hero_sprite
-
-local rot = 0
-
--- animation parameters
-local anim_fps = 10
-local anim_timer = 1 / anim_fps
-local anim_frame = 1
-local num_frames = 6
-local x_offset
 
 local sprite
 local idle = Anim(16, 16, 16, 16, 4, 4, 6)
@@ -22,6 +13,7 @@ local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
 local punchSfx = love.audio.newSource("assets/sfx/hits/hit01.wav", "static")
 
 function love.load()
+    Key:hook_love_events()
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
     love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
@@ -34,31 +26,38 @@ function love.load()
     sprite:animate("walk")
 end
 
-function love.update(dt)  
-    sprite:update(dt, hero_sprite)
+function love.update(dt)
+    if Key:key_down("space") and sprite.current_animation ~= "punch" then
+        sprite:animate("punch")
+        love.audio.stop(punchSfx)        
+        love.audio.play(punchSfx)     
+    elseif Key:key_down("escape") then
+        love.event.quit()
+    end
 
     if sprite.current_animation == "punch" and sprite:animation_finished() then
         sprite:animate("idle")
     end
+    Key:update(dt)
+    sprite:update(dt)
 end
 
 function love.draw()
-    -- love.graphics.draw(hero_atlas, hero_sprite, 320, 180, rot, 10, 10, 8, 8)
     sprite:draw()
 end
 
-function love.keypressed(key, scancode, isrepeat)
-    if key == "space" and sprite.current_animation ~= "punch" then
-        sprite:animate("punch")
-        love.audio.stop(punchSfx)        
-        love.audio.play(punchSfx)        
-    elseif key == "a" then
-        sprite:flip_h(true)
-    elseif key == "d" then
-        sprite:flip_h(false)
-    elseif key == "w" then
-        sprite:flip_v(true)
-    elseif key == "s" then
-        sprite:flip_v(false)
-    end
-end
+-- function love.keypressed(key, scancode, isrepeat)
+--     if key == "space" and sprite.current_animation ~= "punch" then
+--         sprite:animate("punch")
+--         love.audio.stop(punchSfx)        
+--         love.audio.play(punchSfx)        
+--     elseif key == "a" then
+--         sprite:flip_h(true)
+--     elseif key == "d" then
+--         sprite:flip_h(false)
+--     elseif key == "w" then
+--         sprite:flip_v(true)
+--     elseif key == "s" then
+--         sprite:flip_v(false)
+--     end
+-- end
