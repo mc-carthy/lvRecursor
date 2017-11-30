@@ -1,6 +1,9 @@
 local Anim = require("Animation")
 local Sprite = require("Sprite")
 local Key = require("Keyboard")
+local Evt = require("Events")
+
+local e
 
 local hero_atlas
 
@@ -14,6 +17,11 @@ local punchSfx = love.audio.newSource("assets/sfx/hits/hit01.wav", "static")
 
 function love.load()
     Key:hook_love_events()
+
+    e = Evt()
+    e:add("on_space")
+    e:hook("on_space", on_space)
+
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
     love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
@@ -26,11 +34,18 @@ function love.load()
     sprite:animate("walk")
 end
 
+function on_space()
+    print("SPACE!")
+end
+
 function love.update(dt)
     if Key:key_down("space") and sprite.current_animation ~= "punch" then
         sprite:animate("punch")
         love.audio.stop(punchSfx)        
-        love.audio.play(punchSfx)     
+        love.audio.play(punchSfx)
+        e:invoke("on_space")
+    elseif Key:key_down("u") then
+        e:unhook("on_space", on_space)
     elseif Key:key_down("escape") then
         love.event.quit()
     end
