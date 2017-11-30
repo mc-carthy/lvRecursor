@@ -15,7 +15,7 @@ local x_offset
 
 local sprite
 local idle = Anim(16, 16, 16, 16, 4, 4, 6)
-local walk = Anim(16, 32, 16, 16, 6, 6, 12)
+local walk = Anim(16, 32, 16, 16, { 1, 2, 3, 4, 5, 6 }, 6, 12)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
 
