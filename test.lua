@@ -1,4 +1,4 @@
-Class = require("Class")
+Class = require("lib.Class")
 
 local Animal = Class:derive("Animal")
 local Human = Class:derive("Human")

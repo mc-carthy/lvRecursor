@@ -1,7 +1,7 @@
-local Anim = require("Animation")
-local Sprite = require("Sprite")
-local Key = require("Keyboard")
-local Evt = require("Events")
+local Anim = require("lib.Animation")
+local Sprite = require("lib.Sprite")
+local Key = require("lib.Keyboard")
+local Evt = require("lib.Events")
 
 local e
 

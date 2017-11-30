@@ -1,7 +1,8 @@
-local Class = require("Class")
-local Sprite = class:derive("Sprite")
-local Anim = require("Animation")
-local Vector2 = require("Vector2")
+local Class = require("lib.Class")
+local Anim = require("lib.Animation")
+local Vector2 = require("lib.Vector2")
+
+local Sprite = Class:derive("lib.Sprite")
 
 function Sprite:new(atlas, width, height, x, y, sx, sy, angle)
     self.width = width

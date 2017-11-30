@@ -1,6 +1,7 @@
-local Class = require("Class")
-local Anim = class:derive("Animation")
-local Vector2 = require("Vector2")
+local Class = require("lib.Class")
+local Vector2 = require("lib.Vector2")
+
+local Anim = Class:derive("Animation")
 
 function Anim:new(x_offset, y_offset, cell_width, cell_height, frames, column_size, fps, loop)
     self.fps = fps
