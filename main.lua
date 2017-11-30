@@ -31,7 +31,7 @@ function love.load()
     sprite:add_animation("walk", walk)
     sprite:add_animation("swim", swim)
     sprite:add_animation("punch", punch)
-    sprite:animate("idle")
+    sprite:animate("walk")
 end
 
 function love.update(dt)  
@@ -52,5 +52,13 @@ function love.keypressed(key, scancode, isrepeat)
         sprite:animate("punch")
         love.audio.stop(punchSfx)        
         love.audio.play(punchSfx)        
+    elseif key == "a" then
+        sprite:flip_h(true)
+    elseif key == "d" then
+        sprite:flip_h(false)
+    elseif key == "w" then
+        sprite:flip_v(true)
+    elseif key == "s" then
+        sprite:flip_v(false)
     end
 end
