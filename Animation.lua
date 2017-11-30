@@ -1,4 +1,4 @@
-local class = require("class")
+local Class = require("Class")
 local Anim = class:derive("Animation")
 local Vector2 = require("Vector2")
 
