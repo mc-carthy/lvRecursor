@@ -2,8 +2,10 @@ local Anim = require("lib.Animation")
 local Sprite = require("lib.Sprite")
 local Key = require("lib.Keyboard")
 local Evt = require("lib.Events")
+local GPM = require("lib.Gamepad")
 
 local e
+local gpm = GPM({"assets/gameControllerdb.txt"})
 
 local hero_atlas
 
@@ -17,6 +19,9 @@ local punchSfx = love.audio.newSource("assets/sfx/hits/hit01.wav", "static")
 
 function love.load()
     Key:hook_love_events()
+
+    gpm.event:hook('controller_added', on_controller_added)
+    gpm.event:hook('controller_removed', on_controller_removed)
 
     e = Evt()
     e:add("on_space")
@@ -32,6 +37,14 @@ function love.load()
     sprite:add_animation("swim", swim)
     sprite:add_animation("punch", punch)
     sprite:animate("walk")
+end
+
+function on_controller_added(joyId)
+    print("controller " .. joyId .. "added")
+end
+
+function on_controller_removed(joyId)
+    print("controller " .. joyId .. "removed")
 end
 
 function on_space()
@@ -53,8 +66,14 @@ function love.update(dt)
     if sprite.current_animation == "punch" and sprite:animation_finished() then
         sprite:animate("idle")
     end
+
+    if gpm:button_down(1, "a") then
+        print("a is down")
+    end
+
     Key:update(dt)
     sprite:update(dt)
+    gpm:update(dt)
 end
 
 function love.draw()
