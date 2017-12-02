@@ -20,7 +20,7 @@ function T:new(scene_manager)
     self.super:new(scene_manager)
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
     -- hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
-    sprite = Sprite(hero_atlas, 16, 16, 100, 100, 10, 10)
+    sprite = Sprite(hero_atlas, 100, 100, 16, 16, 10, 10)
     sprite:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
     sprite:animate("walk")
 end

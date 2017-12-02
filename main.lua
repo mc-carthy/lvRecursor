@@ -11,13 +11,15 @@ function love.load()
     Key:hook_love_events()
     -- Ensures pixel images have no filtering and will appear crisp if scaled up
     love.graphics.setDefaultFilter('nearest', 'nearest')
+    local font = love.graphics.newFont("assets/Minecraft.ttf", 20)
+    love.graphics.setFont(font)
 
     gpm.event:hook('controller_added', on_controller_added)
     gpm.event:hook('controller_removed', on_controller_removed)
 
     sm = SM("scenes", {"main_menu", "test"})
-    -- sm:switch("main_menu")
-    sm:switch("test")
+    sm:switch("main_menu")
+    -- sm:switch("test")
 end
 
 function on_controller_added(joyId)
