@@ -5,7 +5,8 @@ local Evt = require("lib.Events")
 local GPM = require("lib.Gamepad")
 
 local e
-local gpm = GPM({"assets/gameControllerdb.txt"})
+-- local gpm = GPM({"assets/gameControllerdb.txt"})
+local gpm = GPM()
 
 local hero_atlas
 
@@ -32,10 +33,7 @@ function love.load()
     hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
     -- hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
     sprite = Sprite(hero_atlas, 16, 16, 100, 100, 10, 10)
-    sprite:add_animation("idle", idle)
-    sprite:add_animation("walk", walk)
-    sprite:add_animation("swim", swim)
-    sprite:add_animation("punch", punch)
+    sprite:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
     sprite:animate("walk")
 end
 
@@ -67,7 +65,7 @@ function love.update(dt)
         sprite:animate("idle")
     end
 
-    if gpm:button_down(1, "a") then
+    if gpm:button_down(1, 4) then
         print("a is down")
     end
 
