@@ -1,40 +1,23 @@
-local Anim = require("lib.Animation")
-local Sprite = require("lib.Sprite")
-local Key = require("lib.Keyboard")
-local Evt = require("lib.Events")
+Key = require("lib.Keyboard")
 local GPM = require("lib.Gamepad")
+local SM = require("lib.SceneManager")
 
 local e
 -- local gpm = GPM({"assets/gameControllerdb.txt"})
 local gpm = GPM()
-
-local hero_atlas
-
-local sprite
-local idle = Anim(16, 16, 16, 16, 4, 4, 6)
-local walk = Anim(16, 32, 16, 16, { 1, 2, 3, 4, 5, 6 }, 6, 12)
-local swim = Anim(16, 64, 16, 16, 6, 6, 12)
-local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
-
-local punchSfx = love.audio.newSource("assets/sfx/hits/hit01.wav", "static")
+local sm
 
 function love.load()
     Key:hook_love_events()
+    -- Ensures pixel images have no filtering and will appear crisp if scaled up
+    love.graphics.setDefaultFilter('nearest', 'nearest')
 
     gpm.event:hook('controller_added', on_controller_added)
     gpm.event:hook('controller_removed', on_controller_removed)
 
-    e = Evt()
-    e:add("on_space")
-    e:hook("on_space", on_space)
-
-    -- Ensures pixel images have no filtering and will appear crisp if scaled up
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-    hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
-    -- hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions(hero_atlas))
-    sprite = Sprite(hero_atlas, 16, 16, 100, 100, 10, 10)
-    sprite:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
-    sprite:animate("walk")
+    sm = SM("scenes", {"main_menu", "test"})
+    -- sm:switch("main_menu")
+    sm:switch("test")
 end
 
 function on_controller_added(joyId)
@@ -45,51 +28,20 @@ function on_controller_removed(joyId)
     print("controller " .. joyId .. "removed")
 end
 
-function on_space()
-    print("SPACE!")
-end
-
 function love.update(dt)
-    if Key:key_down("space") and sprite.current_animation ~= "punch" then
-        sprite:animate("punch")
-        love.audio.stop(punchSfx)        
-        love.audio.play(punchSfx)
-        e:invoke("on_space")
-    elseif Key:key_down("u") then
-        e:unhook("on_space", on_space)
-    elseif Key:key_down("escape") then
-        love.event.quit()
+    if Key:key_down(",") then
+        sm:switch("main_menu")
+    elseif Key:key_down(".") then
+        sm:switch("test")
     end
+    
 
-    if sprite.current_animation == "punch" and sprite:animation_finished() then
-        sprite:animate("idle")
-    end
-
-    if gpm:button_down(1, 4) then
-        print("a is down")
-    end
-
+    sm:update(dt)
     Key:update(dt)
-    sprite:update(dt)
     gpm:update(dt)
 end
 
 function love.draw()
-    sprite:draw()
+    love.graphics.clear(0, 191, 191)
+    sm:draw()
 end
-
--- function love.keypressed(key, scancode, isrepeat)
---     if key == "space" and sprite.current_animation ~= "punch" then
---         sprite:animate("punch")
---         love.audio.stop(punchSfx)        
---         love.audio.play(punchSfx)        
---     elseif key == "a" then
---         sprite:flip_h(true)
---     elseif key == "d" then
---         sprite:flip_h(false)
---     elseif key == "w" then
---         sprite:flip_v(true)
---     elseif key == "s" then
---         sprite:flip_v(false)
---     end
--- end
