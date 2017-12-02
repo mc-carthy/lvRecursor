@@ -25,12 +25,14 @@ local function hook_love_events(self)
         self.event:invoke('controller_removed', id)
     end
 
-    function love.gamepadpressed(joystick, button)
+    function love.joystickpressed(joystick, button)
+        print("Button pressed: " .. button)
         local id = joystick:getID()
         self.button_map[id][button] = true
     end
 
-    function love.gamepadreleased(joystick, button)
+    function love.joystickreleased(joystick, button)
+        print("Button released: " .. button)
         local id = joystick:getID()
         self.button_map[id][button] = false
     end
