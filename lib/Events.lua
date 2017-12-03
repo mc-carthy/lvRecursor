@@ -73,7 +73,7 @@ end
 
 -- Invoke the event
 function Events:invoke(evnt_type, ...)
-    if self.handlers[evnt_type] ~= nil then return end
+    if self.handlers[evnt_type] == nil then return end
     -- assert(self.handlers[evnt_type] ~= nil, "Event of type " .. evnt_type .. " does not exist.")
 
     local tbl = self.handlers[evnt_type]

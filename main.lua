@@ -1,6 +1,7 @@
 Key = require("lib.Keyboard")
 local GPM = require("lib.Gamepad")
 local SM = require("lib.SceneManager")
+local EVT = require("lib.Events")
 
 local e
 -- local gpm = GPM({"assets/gameControllerdb.txt"})
@@ -13,6 +14,8 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     local font = love.graphics.newFont("assets/Minecraft.ttf", 20)
     love.graphics.setFont(font)
+
+    _G.events = EVT(false)
 
     gpm.event:hook('controller_added', on_controller_added)
     gpm.event:hook('controller_removed', on_controller_removed)

@@ -61,7 +61,7 @@ function Button:update(dt)
     if in_bounds and not left_click then
         self.colour = self.highlight
         if self.previous_left_click then
-            self:enabled(false)
+            _G.events:invoke("onBtnClick", self)
         end
     elseif in_bounds and left_click then
         self.colour = self.pressed
