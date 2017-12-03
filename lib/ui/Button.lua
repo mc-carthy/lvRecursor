@@ -11,10 +11,11 @@ local function grey(level, a)
     return {level, level, level, a or 255}
 end
 
-function Button:new(x, y, width, height)
+function Button:new(x, y, width, height, label)
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
     self.height = height
+    self.label = label
 
     -- Button colours
     self.normal = colour(191, 31, 31, 191)
@@ -38,7 +39,13 @@ function Button:draw()
     love.graphics.setColor(self.normal)
     love.graphics.rectangle("fill", self.pos.x - self.width / 2, self.pos.y - self.height / 2, self.width, self.height, 4, 4)
     love.graphics.setColor(r, g, b, a)
-    love.graphics.print("New", self.pos.x - 20, self.pos.y - 10)
+
+    -- TODO - Consider caching this value
+    local f = love.graphics.getFont()
+    local fw = f:getWidth(self.label)
+    local fh = f:getHeight();
+
+    love.graphics.print(self.label, self.pos.x - fw / 2, self.pos.y - fh / 2)
 end
 
 return Button

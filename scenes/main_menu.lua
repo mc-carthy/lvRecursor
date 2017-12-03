@@ -5,7 +5,7 @@ local MM = Scene:derive("main_menu")
 
 function MM:new(scene_manager)
     self.super(scene_manager)
-    self.button = Button(100, 100, 125, 40)
+    self.button = Button(100, 100, 140, 40, "Press Me!")
 end
 
 function MM:draw()
