@@ -24,6 +24,8 @@ function Button:new(x, y, width, height, label)
     self.disabled = grey(127, 255)
     
     self.colour = self.normal
+    self.previous_left_click = false
+    self.interactable = true
 end
 
 local function mouse_in_bounds(self, mx ,my) 
@@ -41,7 +43,16 @@ function Button:top(y)
     self.pos.y = y + self.height / 2
 end
 
+function Button:enabled(enabled)
+    self.interactable = enabled
+    if not enabled then
+        self.colour = self.disabled
+    end
+end
+
 function Button:update(dt)
+    if not self.interactable then return end
+
     -- TODO Consider caching the mouse position elsewhere
     x, y = love.mouse.getPosition()
     local left_click = love.mouse.isDown(1)
@@ -49,11 +60,16 @@ function Button:update(dt)
 
     if in_bounds and not left_click then
         self.colour = self.highlight
+        if self.previous_left_click then
+            self:enabled(false)
+        end
     elseif in_bounds and left_click then
         self.colour = self.pressed
     else
         self.colour = self.normal
     end
+
+    self.previous_left_click = left_click
 end
 
 function Button:draw()
