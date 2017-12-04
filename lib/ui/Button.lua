@@ -16,11 +16,11 @@ local function mouse_in_bounds(self, mx ,my)
            my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
 end
 
-function Button:new(x, y, width, height, label)
+function Button:new(x, y, width, height, text)
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
     self.height = height
-    self.label = label
+    self.text = text
     
     -- Button colours
     self.normal = colour(191, 31, 31, 191)
@@ -111,12 +111,12 @@ function Button:draw()
 
     -- TODO - Consider caching this value
     local f = love.graphics.getFont()
-    local fw = f:getWidth(self.label)
-    local _, lines = f:getWrap(self.label, self.width)
+    local fw = f:getWidth(self.text)
+    local _, lines = f:getWrap(self.text, self.width)
     local fh = f:getHeight();
 
     love.graphics.setColor(self.text_colour)
-    love.graphics.printf(self.label, self.pos.x - self.width / 2, self.pos.y - (fh / 2 * #lines), self.width, "center")
+    love.graphics.printf(self.text, self.pos.x - self.width / 2, self.pos.y - (fh / 2 * #lines), self.width, "center")
     love.graphics.setColor(r, g, b, a)
 end
 

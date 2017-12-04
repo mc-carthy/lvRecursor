@@ -1,5 +1,6 @@
 local Scene = require("lib.Scene")
 local Button = require("lib.ui.Button")
+local Label = require("lib.ui.Label")
 
 local MM = Scene:derive("main_menu")
 
@@ -22,8 +23,11 @@ function MM:enter()
         exit_button:colours({0, 191, 0, 255}, {63, 215, 63, 255}, {127, 255, 127, 255}, {63, 63, 63, 255})
         exit_button.layer = 0
 
+        local mm_text = Label(0, 20, sw, 40, "Main Menu")
+
         self.em:add(start_button)
         self.em:add(exit_button)
+        self.em:add(mm_text)
     end
     
     _G.events:hook("onBtnClick", self.click)    
@@ -34,11 +38,12 @@ function MM:exit()
 end
 
 function MM:on_click(button)
-    print(button.label)
-    if button.label == "Start!" then
+    if button.text == "Start!" then
         self.scene_manager:switch("test")
-    elseif button.label == "Quit!" then
+        -- button.remove = true
+    elseif button.text == "Quit!" then
         love.event.quit()
+        -- button.remove = true
     end
 end
 
@@ -47,8 +52,8 @@ function MM:update(dt)
 
     if Key:key_down("escape") then
         love.event.quit()
-    elseif Key:key_down("space") then
-        self.button:enabled(not self.button.interactable)
+    -- elseif Key:key_down("space") then
+    --     self.button:enabled(not self.button.interactable)
     end
 
 
@@ -56,8 +61,6 @@ end
 
 function MM:draw()
     self.super:draw()
-
-    love.graphics.printf("Hello from main_menu!", 0, 25, love.graphics.getWidth(), "center")
 end
 
 return MM
