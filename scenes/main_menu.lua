@@ -5,14 +5,22 @@ local MM = Scene:derive("main_menu")
 
 function MM:new(scene_manager)
     self.super(scene_manager)
-    self.button = Button(100, 100, 140, 40, "Press Me!")
+    local sw = love.graphics.getWidth()
+    local sh = love.graphics.getHeight()
+    self.button = Button(sw / 2, sh / 2 - 60, 140, 40, "Start!")
+end
 
-    _G.events:hook("onBtnClick", on_click)
+function MM:enter()
+    _G.events:hook("onBtnClick", on_click)    
+end
+
+function MM:exit()
+    _G.events:unhook("onBtnClick", on_click)
 end
 
 function on_click(button)
     print(button.label)
-    button:enabled(false)
+    -- button:enabled(false)
 end
 
 function MM:update(dt)
@@ -26,7 +34,7 @@ end
 
 function MM:draw()
     self.button:draw()
-    love.graphics.print("Hello from main_menu!", 200, 25)
+    love.graphics.printf("Hello from main_menu!", 0, 25, love.graphics.getWidth(), "center")
 end
 
 return MM
