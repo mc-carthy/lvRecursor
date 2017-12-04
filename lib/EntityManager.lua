@@ -31,7 +31,7 @@ function EM:add(entity)
 end
 
 function EM:update(dt)
-    for i = 1, #self.entities do
+    for i = #self.entities, 1, -1 do
         local e = self.entities[i]
         
         if e.remove == true then
@@ -40,7 +40,6 @@ function EM:update(dt)
                 e:on_remove()
             end
             table.remove(self.entities, i)
-            i = i - 1
         elseif not e.started then
             e.started = true
             if e.on_start then 
