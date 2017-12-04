@@ -46,6 +46,7 @@ function T:update(dt)
 end
 
 function T:draw()
+    love.graphics.clear(64,64,255)    
     love.graphics.print("Hello from test!", 200, 25)
     sprite:draw()    
 end
