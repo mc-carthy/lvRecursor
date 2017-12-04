@@ -4,11 +4,16 @@ local Vector2 = require("lib.Vector2")
 local Button = Class:derive("Button")
 
 local function colour(r, g, b, a)
-    return {r, g, b, a or 255}
+    return {r, g or r, b or r, a or 255}
 end
 
 local function grey(level, a)
     return {level, level, level, a or 255}
+end
+
+local function mouse_in_bounds(self, mx ,my) 
+    return mx >= self.pos.x - self.width / 2 and mx <= self.pos.x + self.width / 2 and
+           my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
 end
 
 function Button:new(x, y, width, height, label)
@@ -41,21 +46,16 @@ function Button:text_colours(normal, disabled)
     self.text_disabled = disabled
 end
 
-function Button:colours(normal, highlight, pressed,  disabled)
+function Button:colours(normal, highlight, pressed, disabled)
     assert(type(normal) == "table", "Normal must be a table.")
     assert(type(highlight) == "table", "Highlight must be a table.")
     assert(type(pressed) == "table", "Pressed must be a table.")
     assert(type(disabled) == "table", "Disabled must be a table.")
 
     self.normal = normal
-    self.highlight = normal
-    self.pressed = normal
+    self.highlight = highlight
+    self.pressed = pressed
     self.disabled = disabled
-end
-
-local function mouse_in_bounds(self, mx ,my) 
-    return mx >= self.pos.x - self.width / 2 and mx <= self.pos.x + self.width / 2 and
-           my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
 end
 
 -- Set the button's left-most x location at a given value
