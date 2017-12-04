@@ -8,19 +8,21 @@ function MM:new(scene_manager)
     local sw = love.graphics.getWidth()
     local sh = love.graphics.getHeight()
     self.button = Button(sw / 2, sh / 2 - 60, 140, 40, "Start!")
+    
+    self.click = function(btn) self:on_click(btn) end
 end
 
 function MM:enter()
-    _G.events:hook("onBtnClick", on_click)    
+    _G.events:hook("onBtnClick", self.click)    
 end
 
 function MM:exit()
-    _G.events:unhook("onBtnClick", on_click)
+    _G.events:unhook("onBtnClick", self.click)
 end
 
-function on_click(button)
+function MM:on_click(button)
     print(button.label)
-    -- button:enabled(false)
+    self.scene_manager:switch("test")
 end
 
 function MM:update(dt)
