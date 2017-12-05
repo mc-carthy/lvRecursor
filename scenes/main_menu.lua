@@ -23,7 +23,7 @@ function MM:enter()
         exit_button:colours({0, 191, 0, 255}, {63, 215, 63, 255}, {127, 255, 127, 255}, {63, 63, 63, 255})
         exit_button.layer = 0
 
-        local mm_text = Label(0, 20, sw, 40, "Main Menu")
+        local mm_text = Label(0, 20, sw, 40, "Main Menu", {0, 255, 0, 255})
 
         self.em:add(start_button)
         self.em:add(exit_button)

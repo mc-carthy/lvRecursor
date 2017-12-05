@@ -1,13 +1,15 @@
 local Class = require("lib.Class")
 local Vector2 = require("lib.Vector2")
+local U = require("lib.Utils")
 
 local Label = Class:derive("Label")
 
-function Label:new(x, y, width, height, text, align)
+function Label:new(x, y, width, height, text, colour, align)
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
     self.height = height
     self.text = text
+    self.colour = colour or U.colour(255)
     self.align = align or "center"
 end
 
@@ -18,6 +20,7 @@ function Label:draw()
     local f = love.graphics.getFont()
     local _, lines = f:getWrap(self.text, self.width)
     local fh = f:getHeight();
+    love.graphics.setColor(self.colour)
     love.graphics.printf(self.text, self.pos.x, self.pos.y - (#lines * fh / 2), self.width, self.align)
 
     -- love.graphics.rectangle("line", self.pos.x, self.pos.y - self.height / 2, self.width, self.height)
