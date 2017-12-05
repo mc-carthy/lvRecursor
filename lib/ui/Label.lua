@@ -20,7 +20,7 @@ function Label:draw()
     local fh = f:getHeight();
     love.graphics.printf(self.text, self.pos.x, self.pos.y - (#lines * fh / 2), self.width, self.align)
 
-    love.graphics.rectangle("line", self.pos.x, self.pos.y - self.height / 2, self.width, self.height)
+    -- love.graphics.rectangle("line", self.pos.x, self.pos.y - self.height / 2, self.width, self.height)
 end
 
 return Label
