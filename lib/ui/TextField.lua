@@ -4,6 +4,8 @@ local Label = require("lib.ui.Label")
 
 local TextField = Label:derive("TextField")
 
+local cursor = "|"
+
 -- On Android and iOS, textinput is disabled by default; call love.keyboard.setTextInput to enable it.
 function TextField:new(x, y, width, height, text, colour, align)
     TextField.super.new(self, x, y, width, height, text, colour, align)
@@ -32,12 +34,16 @@ end
 
 function TextField:set_focus(focus)
     assert(type(focus) == "boolean", "Paramter focus should be of type boolean")
-    self.focus = focus
     if focus then
         self.back_colour = self.focused_colour
+        self.text = self.text .. cursor
     else
         self.back_colour = self.unfocused_colour
+        if not focus and self.focus then
+            self:remove_end_chars(1)
+        end
     end
+    self.focus = focus
 end
 
 function TextField:on_text_input(text)
@@ -46,12 +52,20 @@ function TextField:on_text_input(text)
     end
 
     if text == "backspace" then
-        local byte_offset = utf8.offset(self.text, -1)
-        if byte_offset then
-            self.text = string.sub(self.text, 1, byte_offset - 1)
-        end
+        -- We remove 2 characters because we need to remove both the cursor and last char
+        self:remove_end_chars(2)
+        self.text = self.text .. cursor
     else
+        self:remove_end_chars(1)        
         self.text = self.text .. text
+        self.text = self.text .. cursor
+    end
+end
+
+function TextField:remove_end_chars(num)
+    local byte_offset = utf8.offset(self.text, -num)
+    if byte_offset then
+        self.text = string.sub(self.text, 1, byte_offset - 1)
     end
 end
 
