@@ -7,6 +7,11 @@ function Events:new(event_must_exist)
     self.event_must_exist = (event_must_exist == nil) or event_must_exist
 end
 
+-- Check if an event exists
+function Events:exists(evnt_type)
+    return self.handlers[evnt_type] ~= nil
+end
+
 -- Add an event to our event table
 function Events:add(evnt_type)
     -- if self.handlers[evnt_type] ~= nil then return end

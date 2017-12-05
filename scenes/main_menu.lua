@@ -1,6 +1,8 @@
 local Scene = require("lib.Scene")
+local U = require("lib.Utils")
 local Button = require("lib.ui.Button")
 local Label = require("lib.ui.Label")
+local TextField = require("lib.ui.TextField")
 
 local MM = Scene:derive("main_menu")
 
@@ -14,6 +16,7 @@ end
 local entered = false
 
 function MM:enter()
+    MM.super.enter(self)
     if not entered then
         entered = true
 
@@ -27,9 +30,11 @@ function MM:enter()
 
         local mm_text = Label(0, 20, sw, 40, "Main Menu")
 
+        local tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
         self.em:add(start_button)
         self.em:add(exit_button)
         self.em:add(mm_text)
+        self.em:add(tf)
     end
     
     _G.events:hook("onBtnClick", self.click)    
