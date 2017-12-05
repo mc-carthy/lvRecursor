@@ -47,6 +47,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.clear(0, 191, 191)
+    love.graphics.clear(0, 0, 0)
     sm:draw()
 end

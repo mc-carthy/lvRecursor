@@ -5,8 +5,10 @@ local Label = require("lib.ui.Label")
 local MM = Scene:derive("main_menu")
 
 function MM:new(scene_manager)
-    self.super(scene_manager)
-    self.click = function(btn) self:on_click(btn) end   
+    MM.super.new(self, scene_manager)
+    self.click = function(btn) 
+        self:on_click(btn) 
+    end
 end
 
 local entered = false
@@ -19,11 +21,11 @@ function MM:enter()
         local sh = love.graphics.getHeight()
         
         local start_button = Button(sw / 2, sh / 2 - 30, 140, 40, "Start!")
-        local exit_button = Button(sw / 2, sh / 2, 140, 40, "Quit!")
+        local exit_button = Button(sw / 2, sh / 2 + 30, 140, 40, "Quit!")
         exit_button:colours({0, 191, 0, 255}, {63, 215, 63, 255}, {127, 255, 127, 255}, {63, 63, 63, 255})
         exit_button.layer = 0
 
-        local mm_text = Label(0, 20, sw, 40, "Main Menu", {0, 255, 0, 255})
+        local mm_text = Label(0, 20, sw, 40, "Main Menu")
 
         self.em:add(start_button)
         self.em:add(exit_button)
@@ -48,7 +50,7 @@ function MM:on_click(button)
 end
 
 function MM:update(dt)
-    self.super:update(dt)
+    self.super.update(self, dt)
 
     if Key:key_down("escape") then
         love.event.quit()
@@ -60,7 +62,7 @@ function MM:update(dt)
 end
 
 function MM:draw()
-    self.super:draw()
+    self.super.draw(self)
 end
 
 return MM
