@@ -4,11 +4,6 @@ local U = require("lib.Utils")
 
 local Button = Class:derive("Button")
 
-local function mouse_in_bounds(self, mx ,my) 
-    return mx >= self.pos.x - self.width / 2 and mx <= self.pos.x + self.width / 2 and
-           my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
-end
-
 function Button:new(x, y, width, height, text)
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
@@ -77,7 +72,7 @@ function Button:update(dt)
     -- TODO Consider caching the mouse position elsewhere
     x, y = love.mouse.getPosition()
     local left_click = love.mouse.isDown(1)
-    local in_bounds = mouse_in_bounds(self, x, y)
+    local in_bounds = U.mouse_in_bounds(self, x, y)
 
     if in_bounds and not left_click then
         self.colour = self.highlight

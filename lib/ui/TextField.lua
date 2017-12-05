@@ -36,10 +36,12 @@ function TextField:set_focus(focus)
     assert(type(focus) == "boolean", "Paramter focus should be of type boolean")
     if focus then
         self.back_colour = self.focused_colour
-        self.text = self.text .. cursor
+        if not self.focus then
+            self.text = self.text .. cursor
+        end
     else
         self.back_colour = self.unfocused_colour
-        if not focus and self.focus then
+        if self.focus then
             self:remove_end_chars(1)
         end
     end
