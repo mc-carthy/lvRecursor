@@ -18,9 +18,11 @@ function Scene:draw()
 end
 
 function Scene:enter()
+    self.em:on_enter()
 end
 
 function Scene:exit()
+    self.em:on_exit()
 end
 
 function Scene:destroy()
