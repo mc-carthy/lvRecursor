@@ -4,14 +4,16 @@ local U = require("lib.Utils")
 
 local Slider = Class:derive("Slider")
 
-function Slider:new(x, y, width, height)
+function Slider:new(x, y, width, height, id)
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
     self.groove_height = 5
     self.knob_width = 20
     self.knob_height = height
+    self.id = id
 
     self.slider_pos = 0
+    self.previous_slider_pos = 0
     self.slider_x_delta = 0
     self.slider_moving = false
     self.value = 0
@@ -51,13 +53,18 @@ function Slider:update(dt)
 
     if self.slider_moving and left_click then
         self.colour = self.pressed        
+        self.previous_slider_pos = self.slider_pos
         self.slider_pos = mx + self.slider_x_delta
         if self.slider_pos > self.width - self.knob_width then
             self.slider_pos = self.width - self.knob_width
         elseif self.slider_pos < 0 then
             self.slider_pos = 0
         end
-        print(self:get_value())
+
+        if self.slider_pos ~= self.previous_slider_pos then
+            _G.events:invoke("onSliderChanged", self)
+        end
+        
     else
         self.slider_moving = false
     end
