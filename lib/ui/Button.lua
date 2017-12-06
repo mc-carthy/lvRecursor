@@ -70,7 +70,7 @@ function Button:update(dt)
     if not self.interactable then return end
 
     -- TODO Consider caching the mouse position elsewhere
-    x, y = love.mouse.getPosition()
+    local x, y = love.mouse.getPosition()
     local left_click = love.mouse.isDown(1)
     local in_bounds = U.mouse_in_bounds(self, x, y)
 

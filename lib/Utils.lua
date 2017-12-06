@@ -23,4 +23,8 @@ function U.mouse_in_bounds(self, mx ,my)
            my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
 end
 
+function U.mouse_in_rect(mx, my, rx, ry, rw, rh)
+    return mx >= rx and mx <= rx + rw and my >= ry and my <= ry + rh
+end
+
 return U
