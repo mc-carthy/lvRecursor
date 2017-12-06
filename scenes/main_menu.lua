@@ -3,6 +3,7 @@ local U = require("lib.Utils")
 local Button = require("lib.ui.Button")
 local Label = require("lib.ui.Label")
 local TextField = require("lib.ui.TextField")
+local Slider = require("lib.ui.Slider")
 
 local MM = Scene:derive("main_menu")
 
@@ -20,10 +21,13 @@ function MM:new(scene_manager)
     local mm_text = Label(0, 20, sw, 40, "Main Menu")
 
     self.tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
+    self.slider = Slider(sw / 2 - 100, 275, 200, 40)
+
     self.em:add(start_button)
     self.em:add(exit_button)
     self.em:add(mm_text)
     self.em:add(self.tf)
+    self.em:add(self.slider)
 
     self.click = function(btn) 
         self:on_click(btn) 
