@@ -21,13 +21,15 @@ function MM:new(scene_manager)
     local mm_text = Label(0, 20, sw, 40, "Main Menu")
 
     self.tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
-    self.slider = Slider(sw / 2 - 100, 275, 200, 40, "volume_slider")
+    self.h_slider = Slider(sw / 2 - 100, 275, 200, 40, "horizontal_slider", false)
+    self.v_slider = Slider(20, 40, 40, 200, "verticla_slider", true)
 
     self.em:add(start_button)
     self.em:add(exit_button)
     self.em:add(mm_text)
     self.em:add(self.tf)
-    self.em:add(self.slider)
+    self.em:add(self.h_slider)
+    self.em:add(self.v_slider)
 
     self.click = function(btn) 
         self:on_click(btn) 
