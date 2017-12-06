@@ -40,9 +40,9 @@ function Slider:update(dt)
     local in_bounds = false
     
     if self.is_vertical then
-        in_bounds = U.mouse_in_rect(mx, my, self.pos.x + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_height, self.knob_width, self.knob_height)
+        in_bounds = U.mouse_in_rect(mx, my, self.pos.x - self.knob_height / 2 + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_width, self.knob_height, self.knob_width)
     else
-        in_bounds = U.mouse_in_rect(mx, my, self.pos.x + self.slider_pos, self.pos.y - self.knob_height / 2 - self.groove_size, self.knob_width, self.knob_height)
+        in_bounds = U.mouse_in_rect(mx, my, self.pos.x + self.slider_pos, self.pos.y - self.knob_height + self.groove_size / 2, self.knob_width, self.knob_height)
     end
 
     if in_bounds and not left_click then
@@ -68,8 +68,8 @@ function Slider:update(dt)
         self.previous_slider_pos = self.slider_pos
         if self.is_vertical then
             self.slider_pos = self.pos.y + self.height - (my + self.slider_delta)
-            if self.slider_pos > self.height - self.knob_height then
-                self.slider_pos = self.height - self.knob_height
+            if self.slider_pos > self.height - self.knob_width then
+                self.slider_pos = self.height - self.knob_width
             elseif self.slider_pos < 0 then
                 self.slider_pos = 0
             end
@@ -102,9 +102,9 @@ function Slider:draw()
     love.graphics.setColor(self.groove_colour)
 
     if self.is_vertical then
-        love.graphics.rectangle("fill", self.pos.x + self.knob_width / 2, self.pos.y, self.groove_size, self.height, self.groove_size, self.groove_size)
+        love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.groove_size, self.height, self.groove_size, self.groove_size)
         love.graphics.setColor(self.colour)
-        love.graphics.rectangle("fill", self.pos.x + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_height, self.knob_width, self.knob_height, self.knob_width, self.knob_width)
+        love.graphics.rectangle("fill", self.pos.x - self.knob_height / 2 + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_width, self.knob_height, self.knob_width, self.knob_width, self.knob_width)
     else
         love.graphics.rectangle("fill", self.pos.x, self.pos.y - self.knob_height / 2, self.width, self.groove_size, self.groove_size, self.groove_size)
         love.graphics.setColor(self.colour)
