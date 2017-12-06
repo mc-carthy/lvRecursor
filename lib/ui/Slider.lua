@@ -11,6 +11,7 @@ function Slider:new(x, y, width, height, id, is_vertical)
     self.groove_size = 5
     self.knob_height = 20
     self.knob_width = 20
+    self.knob_radius = 10
     self.id = id
     self.is_vertical = (is_vertical == true) or false
 
@@ -104,17 +105,21 @@ function Slider:draw()
     if self.is_vertical then
         love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.groove_size, self.height, self.groove_size, self.groove_size)
         love.graphics.setColor(self.colour)
-        love.graphics.rectangle("fill", self.pos.x - self.knob_height / 2 + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_width, self.knob_height, self.knob_width, self.knob_width, self.knob_width)
+        love.graphics.rectangle("fill", self.pos.x - self.knob_height / 2 + self.groove_size / 2, self.pos.y + self.height - self.slider_pos - self.knob_width, self.knob_height, self.knob_width, self.knob_radius)
     else
         love.graphics.rectangle("fill", self.pos.x, self.pos.y - self.knob_height / 2, self.width, self.groove_size, self.groove_size, self.groove_size)
         love.graphics.setColor(self.colour)
-        love.graphics.rectangle("fill", self.pos.x + self.slider_pos, self.pos.y - self.knob_height + self.groove_size / 2, self.knob_width, self.knob_height, self.knob_width, self.knob_height)
+        love.graphics.rectangle("fill", self.pos.x + self.slider_pos, self.pos.y - self.knob_height + self.groove_size / 2, self.knob_width, self.knob_height, self.knob_radius)
     end
     love.graphics.setColor(r, g, b, a)
 end
 
 function Slider:get_value()
-    return math.floor((self.slider_pos / (self.width - self.knob_width)) * 100)
+    if self.is_vertical then
+        return math.floor((self.slider_pos / (self.height - self.knob_height)) * 100)
+    else
+        return math.floor((self.slider_pos / (self.width - self.knob_width)) * 100)
+    end
 end
 
 return Slider

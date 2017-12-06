@@ -22,7 +22,9 @@ function MM:new(scene_manager)
 
     self.tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
     self.h_slider = Slider(sw / 2 - 100, 275, 200, 40, "horizontal_slider", false)
-    self.v_slider = Slider(20, 40, 40, 200, "verticla_slider", true)
+    self.v_slider = Slider(20, 40, 40, 200, "vertical_slider", true)
+    self.h_slider_label = Label(sw / 2 + 110, 270, 40, 40, "0", U.grey(255), "left")
+    self.v_slider_label = Label(5, 255, 40, 40, "0", U.grey(255), "center")
 
     self.em:add(start_button)
     self.em:add(exit_button)
@@ -30,6 +32,8 @@ function MM:new(scene_manager)
     self.em:add(self.tf)
     self.em:add(self.h_slider)
     self.em:add(self.v_slider)
+    self.em:add(self.h_slider_label)
+    self.em:add(self.v_slider_label)
 
     self.click = function(btn) 
         self:on_click(btn) 
@@ -69,7 +73,14 @@ function MM:on_click(button)
 end
 
 function MM:on_slider_changed(slider)
-    print("Slider " .. slider.id .. " has a value of " .. slider:get_value())
+    if slider.id == "horizontal_slider" then
+        self.h_slider_label.text = slider:get_value()
+    end
+
+    if slider.id == "vertical_slider" then
+        self.v_slider_label.text = slider:get_value()
+    end
+    -- print("Slider " .. slider.id .. " has a value of " .. slider:get_value())
 end
 
 local prev_down = false
