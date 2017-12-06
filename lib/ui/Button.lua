@@ -81,13 +81,13 @@ function Button:update(dt)
     local in_bounds = mouse_in_bounds(self, x, y)
 
     if in_bounds and not left_click then
-        self.colour = self.highlight
-        if self.previous_left_click then
+        if self.previous_left_click and self.colour == self.pressed then
             _G.events:invoke("onBtnClick", self)
         end
-    elseif in_bounds and left_click then
+        self.colour = self.highlight
+    elseif in_bounds and left_click and not self.previous_left_click then
         self.colour = self.pressed
-    else
+    elseif not in_bounds then
         self.colour = self.normal
     end
 
