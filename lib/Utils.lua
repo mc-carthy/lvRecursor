@@ -18,11 +18,6 @@ function U.point_in_rectangle(point, rect)
     )
 end
 
-function U.mouse_in_bounds(self, mx ,my) 
-    return mx >= self.pos.x - self.width / 2 and mx <= self.pos.x + self.width / 2 and
-           my >= self.pos.y - self.height / 2 and my <= self.pos.y + self.height / 2
-end
-
 function U.mouse_in_rect(mx, my, rx, ry, rw, rh)
     return mx >= rx and mx <= rx + rw and my >= ry and my <= ry + rh
 end
