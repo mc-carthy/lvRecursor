@@ -57,9 +57,13 @@ function Slider:update(dt)
         elseif self.slider_pos < 0 then
             self.slider_pos = 0
         end
+        print(self:get_value())
+    else
+        self.slider_moving = false
     end
 
     self.previous_left_click = left_click
+
 end
 
 function Slider:draw()
@@ -72,6 +76,10 @@ function Slider:draw()
     love.graphics.setColor(self.colour)
     love.graphics.rectangle("fill", self.pos.x + self.slider_pos, self.pos.y - self.knob_height + self.groove_height / 2, self.knob_width, self.knob_height, 4, 4)
     love.graphics.setColor(r, g, b, a)
+end
+
+function Slider:get_value()
+    return math.floor((self.slider_pos / (self.width - self.knob_width)) * 100)
 end
 
 return Slider
