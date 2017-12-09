@@ -36,11 +36,11 @@ function on_controller_removed(joyId)
 end
 
 function love.update(dt)
-    if Key:key_down(",") then
-        sm:switch("main_menu")
-    elseif Key:key_down(".") then
-        sm:switch("test")
-    end
+    -- if Key:key_down(",") then
+    --     sm:switch("main_menu")
+    -- elseif Key:key_down(".") then
+    --     sm:switch("test")
+    -- end
     
 
     sm:update(dt)

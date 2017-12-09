@@ -6,10 +6,24 @@ local T = Scene:derive("tween_test")
 local pos = { x = 0, y = 150 }
 local label 
 
+local tween_index = 1
+local available_tweens = {}
+
+function getTweens()
+    for k, v in pairs(Tween) do
+        if (type(v) == "function") then
+            if k ~= "update" and k ~= "create" then
+                available_tweens[#available_tweens + 1] = v
+            end
+        end
+    end
+end
+
 function T:new(scene_manager)
     T.super.new(self, scene_manager)
     label = Label(0, 25, love.graphics.getWidth(), 50, "No Tween")
     self.em:add(label)
+    getTweens()
 end
 
 function T:update(dt)
@@ -20,7 +34,21 @@ function T:update(dt)
     end
 
     if Key:key_down("space") then
-        Tween.create(pos, "x", 200, 2, Tween.easeOutQuad)
+        Tween.create(pos, "x", 200, 2, available_tweens[tween_index])
+    end
+    
+    if Key:key_down(".") then
+        tween_index = tween_index + 1
+        if tween_index > #available_tweens then
+            tween_index = 1
+        end
+        pos.x = 0
+    end
+
+    for k, v in pairs(Tween) do
+        if v == available_tweens[tween_index] then
+            label.text = k
+        end
     end
 end
 
