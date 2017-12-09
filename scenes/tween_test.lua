@@ -34,7 +34,11 @@ function T:update(dt)
     end
 
     if Key:key_down("space") then
-        Tween.create(pos, "x", 200, 2, available_tweens[tween_index])
+        if pos.x == 0 then
+            Tween.create(pos, "x", 200, 1, available_tweens[tween_index])
+        else
+            Tween.create(pos, "x", 0, 1, available_tweens[tween_index])
+        end            
     end
     
     if Key:key_down(".") then
@@ -42,7 +46,13 @@ function T:update(dt)
         if tween_index > #available_tweens then
             tween_index = 1
         end
-        pos.x = 0
+    end
+
+    if Key:key_down(",") then
+        tween_index = tween_index - 1
+        if tween_index < 1 then
+            tween_index = #available_tweens
+        end
     end
 
     for k, v in pairs(Tween) do
