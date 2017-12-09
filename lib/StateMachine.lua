@@ -37,8 +37,8 @@ function SM:set_transition_function(new_state_name, transition_type)
     else
         self.state = self.state_table[new_state_name .. transition_type]
         assert(type(self.state) == "function", new_state_name .. "() must be a function.")
+        -- print("prev_state: " .. (self.state_name or "") .. self.transition .. " current: " .. (new_state_name .. transition_type or ""))
         self.transition = transition_type
-        print("prev_state: " .. (self.state_name or "") .. self.transition .. " current: " .. (new_state_name .. transition_type or ""))
         
         return true
     end
