@@ -65,6 +65,7 @@ end
 function Checkbox:draw() 
     -- love.graphics.line(self.pos.x, self.pos.y - self.height / 2, self.pos.x, self.pos.y + self.height / 2)
     -- love.graphics.line(self.pos.x - self.width / 2, self.pos.y, self.pos.x  + self.width / 2, self.pos.y)
+    -- love.graphics.rectangle("line", self.pos.x, self.pos.y, self.width,self.height)
 
     local r, g, b, a = love.graphics.getColor()
     local lw = love.graphics.getLineWidth()
@@ -82,7 +83,7 @@ function Checkbox:draw()
     -- TODO - Consider caching this value
     local f = love.graphics.getFont()
     local fw = f:getWidth(self.text)
-    local _, lines = f:getWrap(self.text, self.width - self.cb_width)
+    local _, lines = f:getWrap(self.text, self.width - self.cb_width - padding)
     local fh = f:getHeight();
 
     love.graphics.setColor(self.text_colour)

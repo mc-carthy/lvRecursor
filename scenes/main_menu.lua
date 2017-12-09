@@ -26,7 +26,7 @@ function MM:new(scene_manager)
     self.v_slider = Slider(20, 40, 40, 200, "vertical_slider", true)
     self.h_slider_label = Label(sw / 2 + 110, 270, 40, 40, "0", U.grey(255), "left")
     self.v_slider_label = Label(5, 255, 40, 40, "0", U.grey(255), "center")
-    self.cb = Checkbox(love.graphics.getWidth() / 2 - 100, 300, 200, 40, "Check me!")
+    self.cb = Checkbox(love.graphics.getWidth() / 2 - 100, 300, 200, 40, "Enable Music!")
 
     self.em:add(start_button)
     self.em:add(exit_button)
@@ -93,7 +93,9 @@ function MM:on_slider_changed(slider)
 end
 
 function MM:on_checkbox_changed(checkbox, value)
-    print(checkbox.text .. ": " .. tostring(value))
+    if checkbox.text == "Enable Music!" then
+        print(checkbox.text .. ": " .. tostring(value))
+    end
 end
 
 local prev_down = false
