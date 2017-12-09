@@ -64,6 +64,7 @@ function EM:update(dt)
                 if e.on_start then 
                     e:on_start()
                 end
+            -- elseif e.update then
             else
                 e:update(dt)
             end
@@ -73,7 +74,7 @@ end
 
 function EM:draw()
     for i = 1, #self.entities do
-        if self.entities[i].enabled then
+        if self.entities[i].enabled and self.entities[i].draw then
             self.entities[i]:draw()
         end
     end

@@ -5,16 +5,8 @@ local T = Scene:derive("test")
 
 function T:new(scene_manager)
     T.super.new(self, scene_manager)
-end
-
-local entered = false
-function T:enter()
-    T.super.enter(self)
-    if not entered then
-        entered = true
-        self.p = Player("idle")
-        self.em:add(self.p)
-    end
+    self.p = Player("idle")
+    self.em:add(self.p)
 end
 
 function T:update(dt)
