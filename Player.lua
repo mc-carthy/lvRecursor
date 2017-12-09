@@ -1,8 +1,9 @@
+local Class = require("lib.Class")
 local StateMachine = require("lib.StateMachine")
 local Anim = require("lib.Animation")
 local Sprite = require("lib.Sprite")
 
-local P = StateMachine:derive("Player")
+local P = Class:derive("Player")
 
 local hero_atlas
 local sprite
@@ -18,7 +19,7 @@ local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
 local move_speed = 100
 
 
-function P:new(state)
+function P:new()
     if hero_atlas == nil then
         hero_atlas = love.graphics.newImage("assets/sprites/hero.png")
     end
@@ -38,11 +39,11 @@ function P:new(state)
     self.spr:animate("idle")
     self.vx = 0
 
-    self.super.new(self, state)
+    self.anim_sm = StateMachine(self, "idle")
 end
 
 function P:update(dt)
-    self.super.update(self, dt)
+    self.anim_sm:update(dt)
     self.spr:update(dt)
 
     self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
@@ -58,9 +59,9 @@ end
     
 function P:idle(dt)
     if Key:key("left") or Key:key("right") then
-        self:change("walk")
+        self.anim_sm:change("walk")
     elseif Key:key_down("space") then
-        self:change("punch")
+        self.anim_sm:change("punch")
     end
 end
     
@@ -87,19 +88,19 @@ function P:walk(dt)
         self.vx = 1
     elseif not Key:key("left") and not Key:key("right")then
         self.vx = 0
-        self:change("idle")
+        self.anim_sm:change("idle")
     end
     if Key:key_down("space") then
         self.vx = 0
-        self:change("punch")
+        self.anim_sm:change("punch")
     -- elseif Key:key_down("up") then
-    --     self:change("jump")
+    --     self.anim_sm:change("jump")
     end
 end
 
 function P:punch(dt)
     if self.spr:animation_finished() then
-        self:change("idle")
+        self.anim_sm:change("idle")
     end
 end
 
