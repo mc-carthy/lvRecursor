@@ -20,7 +20,7 @@ function T:update(dt)
     end
 
     if Key:key_down("space") then
-        Tween.create(pos, "x", 200, 2)
+        Tween.create(pos, "x", 200, 2, Tween.easeOutQuad)
     end
 end
 
