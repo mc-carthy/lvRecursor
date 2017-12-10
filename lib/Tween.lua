@@ -1,4 +1,7 @@
 local pow = math.pow
+local sin = math.sin
+local cos = math.cos
+local PI = math.pi
 
 local T = {}
 
@@ -19,6 +22,10 @@ function T.easeOutQuartic(ratio) return 1 - pow(ratio - 1, 4) end
 
 function T.easeInQuintic(ratio) return pow(ratio, 5) end
 function T.easeOutQuintic(ratio) return pow(ratio - 1, 5) + 1 end
+
+function T.easeInSin(ratio) return 1 - cos(ratio * PI / 2) end
+function T.easeOutSin(ratio) return sin(ratio * PI / 2) end
+function T.easeInOutSin(ratio) return (1 + sin(ratio * PI - PI / 2)) / 2 end
 
 function T.create(target, prop_name, to, duration, ease_function)
     assert(type(target) == "table", "Target parameter must be a table.")
