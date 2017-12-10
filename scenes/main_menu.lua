@@ -8,6 +8,8 @@ local Checkbox = require("lib.ui.Checkbox")
 
 local MM = Scene:derive("main_menu")
 
+local mm_text
+
 function MM:new(scene_manager)
     MM.super.new(self, scene_manager)
 
@@ -19,7 +21,7 @@ function MM:new(scene_manager)
     exit_button:colours({0, 191, 0, 255}, {63, 215, 63, 255}, {127, 255, 127, 255}, {63, 63, 63, 255})
     exit_button.layer = 0
 
-    local mm_text = Label(0, 20, sw, 40, "Main Menu")
+    mm_text = Label(sw + 20, 20, sw, 40, "Main Menu")
 
     self.tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
     self.h_slider = Slider(sw / 2 - 100, 275, 200, 40, "horizontal_slider", false)
@@ -51,14 +53,9 @@ function MM:new(scene_manager)
     end
 end
 
-local entered = false
-
 function MM:enter()
+    Tween.create(mm_text.pos, "x", 0, 1, Tween.easeOutCubic)
     MM.super.enter(self)
-    if not entered then
-        entered = true
-    end
-    
     _G.events:hook("onBtnClick", self.click)    
     _G.events:hook("onSliderChanged", self.slider_changed)    
     _G.events:hook("onCheckboxClicked", self.checkbox_changed)    

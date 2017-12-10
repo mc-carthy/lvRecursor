@@ -22,9 +22,9 @@ function love.load()
     gpm.event:hook('controller_removed', on_controller_removed)
 
     sm = SM("scenes", {"main_menu", "test", "tween_test"})
-    -- sm:switch("main_menu")
+    sm:switch("main_menu")
     -- sm:switch("test")
-    sm:switch("tween_test")
+    -- sm:switch("tween_test")
 end
 
 function on_controller_added(joyId)
@@ -36,11 +36,11 @@ function on_controller_removed(joyId)
 end
 
 function love.update(dt)
-    -- if Key:key_down(",") then
-    --     sm:switch("main_menu")
-    -- elseif Key:key_down(".") then
-    --     sm:switch("test")
-    -- end
+    if Key:key_down(",") then
+        sm:switch("main_menu")
+    elseif Key:key_down(".") then
+        sm:switch("test")
+    end
     
 
     sm:update(dt)
