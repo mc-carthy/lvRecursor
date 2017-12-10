@@ -30,7 +30,7 @@ function MM:new(scene_manager)
     self.h_slider_label = Label(sw / 2 + 110, sh / 2 + 55, 40, 40, "0", U.grey(255), "left")
     self.v_slider_label = Label(5, 255, 40, 40, "0", U.grey(255), "center")
     self.cb = Checkbox(sw / 2 - 100, sh / 2 + 75, 200, 40, "Enable Music!")
-    self.bar = Bar(sw / 2, sh / 2 + 150, 200, 40, "Bar")
+    self.bar = Bar("Health", sw / 2, sh / 2 + 150, 200, 40, "0%")
 
     self.em:add(start_button)
     self.em:add(exit_button)
@@ -54,6 +54,10 @@ function MM:new(scene_manager)
     self.checkbox_changed = function(checkbox, value)
         self:on_checkbox_changed(checkbox, value)
     end
+
+    self.bar_changed = function(bar, value)
+        self:on_bar_changed(bar, value)
+    end
 end
 
 function MM:enter()
@@ -62,6 +66,7 @@ function MM:enter()
     _G.events:hook("onBtnClick", self.click)    
     _G.events:hook("onSliderChanged", self.slider_changed)    
     _G.events:hook("onCheckboxClicked", self.checkbox_changed)    
+    _G.events:hook("onBarChanged", self.bar_changed)    
 end
 
 function MM:exit()
@@ -69,6 +74,7 @@ function MM:exit()
     _G.events:unhook("onBtnClick", self.click)
     _G.events:unhook("onSliderChanged", self.slider_changed)
     _G.events:unhook("onCheckboxClicked", self.checkbox_changed)
+    _G.events:unhook("onBarChanged", self.bar_changed)    
 end
 
 function MM:on_click(button)
@@ -95,6 +101,15 @@ end
 function MM:on_checkbox_changed(checkbox, value)
     if checkbox.text == "Enable Music!" then
         print(checkbox.text .. ": " .. tostring(value))
+    end
+end
+
+function MM:on_bar_changed(bar, value)
+    bar.text = tostring(value) .. "%"
+    if value == 100 then
+        bar.bar_colour = bar.bar_colour_full
+    else
+        bar.bar_colour = bar.bar_colour_regular
     end
 end
 

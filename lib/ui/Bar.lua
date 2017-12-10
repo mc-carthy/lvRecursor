@@ -5,12 +5,18 @@ local U = require("lib.Utils")
 local Bar = Class:derive("Bar")
 
 function Bar:set(percentage)
-    self.percentage = math.max(0, math.min(percentage, 100))
+    local new_percentage = math.max(0, math.min(percentage, 100))
+    if self.percentage ~= new_percentage then
+        self.percentage = new_percentage
+        _G.events:invoke("onBarChanged", self, new_percentage)
+    end
+    self.percentage = new_percentage
 end
 
 local line_thickness = 2
 
-function Bar:new(x, y, width, height, text)
+function Bar:new(id, x, y, width, height, text)
+    self.id = id
     self.pos = Vector2(x or 0, y or 0)
     self.width = width
     self.height = height
@@ -19,7 +25,9 @@ function Bar:new(x, y, width, height, text)
     self.filled_value = self.width - line_thickness
 
     self.text_colour = U.grey(255)
-    self.bar_colour = U.colour(0, 191, 0)
+    self.bar_colour_regular = U.colour(0, 191, 0)
+    self.bar_colour_full = U.colour(0, 255, 0)
+    self.bar_colour = self.bar_colour_regular
     self.background_colour = U.colour(191, 0, 0)
     self.outline_colour = U.grey(127)
 end
