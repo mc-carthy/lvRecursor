@@ -11,17 +11,43 @@ local active_tweens = {}
 function T.linear(ratio) return ratio end
 function T.easeInQuad(ratio) return pow(ratio, 2) end
 function T.easeOutQuad(ratio) return 1 - pow(ratio - 1, 2) end
--- Not a quad function
-function T.easeInOut(ratio) return pow(ratio, 2) * (2 - pow(ratio, 2)) end
+function T.easeInOutQuad(ratio)
+    if ratio < 0.5 then
+        return 2 * pow(ratio, 2)
+    else
+        return 1 - 2 * pow((ratio - 1), 2)
+    end
+end
 
 function T.easeInCubic(ratio) return pow(ratio, 3) end
 function T.easeOutCubic(ratio) return pow(ratio - 1, 3) + 1 end
+function T.easeInOutCubic(ratio)
+    if ratio < 0.5 then
+        return 4 * pow(ratio, 3)
+    else
+        return 1 + 4 * pow((ratio - 1), 3)
+    end
+end
 
 function T.easeInQuartic(ratio) return pow(ratio, 4) end
 function T.easeOutQuartic(ratio) return 1 - pow(ratio - 1, 4) end
+function T.easeInOutQuartic(ratio)
+    if ratio < 0.5 then
+        return 8 * pow(ratio, 4)
+    else
+        return 1 - 8 * pow((ratio - 1), 4)
+    end
+end
 
 function T.easeInQuintic(ratio) return pow(ratio, 5) end
 function T.easeOutQuintic(ratio) return pow(ratio - 1, 5) + 1 end
+function T.easeInOutQuintic(ratio)
+    if ratio < 0.5 then
+        return 16 * pow(ratio, 5)
+    else
+        return 1 + 16 * pow((ratio - 1), 5)
+    end
+end
 
 function T.easeInSin(ratio) return 1 - cos(ratio * PI / 2) end
 function T.easeOutSin(ratio) return sin(ratio * PI / 2) end
