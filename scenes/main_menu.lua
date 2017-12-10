@@ -5,6 +5,7 @@ local Label = require("lib.ui.Label")
 local TextField = require("lib.ui.TextField")
 local Slider = require("lib.ui.Slider")
 local Checkbox = require("lib.ui.Checkbox")
+local Bar = require("lib.ui.Bar")
 
 local MM = Scene:derive("main_menu")
 
@@ -16,19 +17,20 @@ function MM:new(scene_manager)
     local sw = love.graphics.getWidth()
     local sh = love.graphics.getHeight()
     
-    local start_button = Button(sw / 2, sh / 2 - 30, 140, 40, "Start!")
-    local exit_button = Button(sw / 2, sh / 2 + 30, 140, 40, "Quit!")
+    local start_button = Button(sw / 2, sh / 2 - 60, 140, 40, "Start!")
+    local exit_button = Button(sw / 2, sh / 2 , 140, 40, "Quit!")
     exit_button:colours({0, 191, 0, 255}, {63, 215, 63, 255}, {127, 255, 127, 255}, {63, 63, 63, 255})
     exit_button.layer = 0
 
     mm_text = Label(sw + 20, 20, sw, 40, "Main Menu")
 
-    self.tf = TextField(sw / 2 - 50, 75, 100, 40, "Hello!", U.grey(191), "left")
-    self.h_slider = Slider(sw / 2 - 100, 275, 200, 40, "horizontal_slider", false)
+    self.tf = TextField(sw / 2 - 50, sh / 2 - 120, 100, 40, "Hello!", U.grey(191), "left")
+    self.h_slider = Slider(sw / 2 - 100, sh / 2 + 60, 200, 40, "horizontal_slider", false)
     self.v_slider = Slider(20, 40, 40, 200, "vertical_slider", true)
-    self.h_slider_label = Label(sw / 2 + 110, 270, 40, 40, "0", U.grey(255), "left")
+    self.h_slider_label = Label(sw / 2 + 110, sh / 2 + 55, 40, 40, "0", U.grey(255), "left")
     self.v_slider_label = Label(5, 255, 40, 40, "0", U.grey(255), "center")
-    self.cb = Checkbox(love.graphics.getWidth() / 2 - 100, 300, 200, 40, "Enable Music!")
+    self.cb = Checkbox(sw / 2 - 100, sh / 2 + 75, 200, 40, "Enable Music!")
+    self.bar = Bar(sw / 2, sh / 2 + 150, 200, 40, "Bar")
 
     self.em:add(start_button)
     self.em:add(exit_button)
@@ -39,6 +41,7 @@ function MM:new(scene_manager)
     self.em:add(self.h_slider_label)
     self.em:add(self.v_slider_label)
     self.em:add(self.cb)
+    self.em:add(self.bar)
 
     self.click = function(btn) 
         self:on_click(btn) 
@@ -105,6 +108,14 @@ function MM:update(dt)
     --     self.button:enabled(not self.button.interactable)
     end
 
+    if Key:key("q") then
+        self.bar:set(self.bar.percentage - 1)
+    end
+
+    if Key:key("e") then
+        self.bar:set(self.bar.percentage + 1)
+    end
+
     local mouse_pos_x, mouse_pos_y = love.mouse.getPosition()
     local mouse_left_down = love.mouse.isDown(1)
 
@@ -122,6 +133,7 @@ function MM:update(dt)
 end
 
 function MM:draw()
+    love.graphics.clear(63, 63, 63)        
     self.super.draw(self)
 end
 
