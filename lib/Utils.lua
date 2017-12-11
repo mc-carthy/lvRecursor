@@ -46,9 +46,15 @@ function U.circle_to_circle_trigger(circle1, circle2)
     if overlap then return true else return false end
 end
 
+-- Mass_ratio represents circle1.mass / circle2.mass
 function U.circle_to_circle_col(circle1, circle2, mass_ratio)
 
-    mass_ratio = mass_ratio or 1
+    mass_ratio = mass_ratio or 0
+    if mass_ratio < 0 then
+        mass_ratio = 0
+    elseif mass_ratio > 1 then
+        mass_ratio = 1
+    end
 
     local c1_c2 = Vector2(circle1.x - circle2.x, circle1.y - circle2.y)
     local dst = c1_c2:magnitude()

@@ -51,7 +51,7 @@ function T:update(dt)
     --     self.c1.c = U.colour(255, 255, 255, 255)
     -- end
 
-    U.circle_to_circle_col(self.c1, self.c2, 0.75)
+    U.circle_to_circle_col(self.c1, self.c2, 0)
     
     -- if U.circle_to_circle_col(self.c1, self.c2, 0.75) then
     --     self.c1.c = U.colour(0, 127, 127, 127)
