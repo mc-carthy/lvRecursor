@@ -22,4 +22,14 @@ function U.mouse_in_rect(mx, my, rx, ry, rw, rh)
     return mx >= rx and mx <= rx + rw and my >= ry and my <= ry + rh
 end
 
+function U.AABBCol(rect1, rect2)
+    local rect1r = rect1.x + rect1.w
+    local rect1b = rect1.y + rect1.h
+    local rect2r = rect2.x + rect2.w
+    local rect2b = rect2.y + rect2.h
+
+    return rect1r >= rect2.x and rect2r >= rect1.x and
+           rect1b >= rect2.y and rect2b >= rect1.y
+end
+
 return U

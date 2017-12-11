@@ -47,6 +47,12 @@ function P:update(dt)
     self.spr:update(dt)
 
     self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
+
+    if Key:key("up") then
+        self.spr.pos.y = self.spr.pos.y - move_speed * dt
+    elseif Key:key("down") then
+        self.spr.pos.y = self.spr.pos.y + move_speed * dt
+    end
 end
 
 function P:draw()

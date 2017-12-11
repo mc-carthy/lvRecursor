@@ -58,6 +58,13 @@ function Sprite:add_animations(animations)
     end
 end
 
+function Sprite:rect()
+    local r = { w = self.width * self.scale.x, h = self.height * self.scale.y }
+    r.x = self.pos.x - r.w / 2
+    r.y = self.pos.y - r.h / 2
+    return r
+end
+
 function Sprite:update(dt)
     if self.animations[self.current_animation] ~= nil then
         self.animations[self.current_animation]:update(dt, self.quad)
@@ -67,6 +74,9 @@ end
 function Sprite:draw()
     love.graphics.setColor(self.tintColour)
     love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.width / 2, self.height / 2)
+
+    local r = self:rect()
+    love.graphics.rectangle("line", r.x, r.y, r.w, r.h)
 end
 
 return Sprite
