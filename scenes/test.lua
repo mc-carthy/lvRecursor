@@ -44,14 +44,20 @@ function T:update(dt)
         self.c1.x = self.c1.x + 100 * dt
     end
 
-    local trigger, msv = U.circle_to_circle_trigger(self.c1,  self.c2)
-    if trigger then
-        self.c1.c = U.colour(0, 127, 127, 127)
-        self.c1.x = self.c2.x + msv.x
-        self.c1.y = self.c2.y + msv.y
-    else
-        self.c1.c = U.colour(255, 255, 255, 255)
-    end
+    -- local trigger, msv = U.circle_to_circle_trigger(self.c1,  self.c2)
+    -- if trigger then
+    --     self.c1.c = U.colour(0, 127, 127, 127)
+    -- else
+    --     self.c1.c = U.colour(255, 255, 255, 255)
+    -- end
+
+    U.circle_to_circle_col(self.c1, self.c2, 0.75)
+    
+    -- if U.circle_to_circle_col(self.c1, self.c2, 0.75) then
+    --     self.c1.c = U.colour(0, 127, 127, 127)
+    -- else
+    --     self.c1.c = U.colour(255, 255, 255, 255)
+    -- end
 end
 
 function T:draw()

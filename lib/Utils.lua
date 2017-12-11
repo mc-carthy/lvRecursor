@@ -41,15 +41,31 @@ end
 function U.circle_to_circle_trigger(circle1, circle2)
     local c1_c2 = Vector2(circle1.x - circle2.x, circle1.y - circle2.y)
     local dst = c1_c2:magnitude()
-
     local overlap = dst < (circle1.r + circle2.r)
 
+    if overlap then return true else return false end
+end
+
+function U.circle_to_circle_col(circle1, circle2, mass_ratio)
+
+    mass_ratio = mass_ratio or 1
+
+    local c1_c2 = Vector2(circle1.x - circle2.x, circle1.y - circle2.y)
+    local dst = c1_c2:magnitude()
+    local overlap = dst < (circle1.r + circle2.r)
+
+    local unit = Vector2.normalised(c1_c2)
+    local msv = Vector2.multiply(unit, circle1.r + circle2.r - dst)
+
     if overlap then
-        local unit = Vector2.normalised(c1_c2)
-        local msv = Vector2.multiply(unit, circle1.r + circle2.r)
-        return true, msv
-    else
-        return false, nil
+        circle1.x = circle1.x + msv.x * (1 - mass_ratio)
+        circle1.y = circle1.y + msv.y * (1 - mass_ratio)
+        circle2.x = circle2.x - msv.x * mass_ratio
+        circle2.y = circle2.y - msv.y * mass_ratio
+        return true
+    else 
+        return false
     end
 end
+
 return U
