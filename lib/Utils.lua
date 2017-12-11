@@ -1,3 +1,4 @@
+local Vector2 = require("lib.Vector2")
 local pow = math.pow
 local sqrt = math.sqrt
 
@@ -35,10 +36,20 @@ function U.AABB_col(rect1, rect2)
            rect1b >= rect2.y and rect2b >= rect1.y
 end
 
-function U.circle_to_circle_col(circle1, circle2)
-    local dst = sqrt(pow(circle1.x - circle2.x, 2) + pow(circle1.y - circle2.y, 2))
+-- Returns true if circles overlap, otherwise false
+-- If true, also returns the minimum seperation vector
+function U.circle_to_circle_trigger(circle1, circle2)
+    local c1_c2 = Vector2(circle1.x - circle2.x, circle1.y - circle2.y)
+    local dst = c1_c2:magnitude()
 
-    return dst < (circle1.r + circle2.r)
+    local overlap = dst < (circle1.r + circle2.r)
+
+    if overlap then
+        local unit = Vector2.normalised(c1_c2)
+        local msv = Vector2.multiply(unit, circle1.r + circle2.r)
+        return true, msv
+    else
+        return false, nil
+    end
 end
-
 return U
