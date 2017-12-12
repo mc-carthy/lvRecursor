@@ -1,20 +1,21 @@
 local Class = require("lib.Class")
 local Anim = require("lib.Animation")
 local Vector2 = require("lib.Vector2")
+local Rect = require("lib.Rect")
 
 local Sprite = Class:derive("Sprite")
 
-function Sprite:new(atlas, x, y, width, height, sx, sy, angle, colour)
+function Sprite:new(atlas, x, y, w, h, sx, sy, angle, colour)
     self.pos = Vector2(x or 0, y or 0)
-    self.width = width
-    self.height = height
+    self.w = w
+    self.h = h
     self.flip = Vector2(1, 1)
     self.scale = Vector2(sx or 1, sy or 1)    
     self.atlas = atlas
     self.animations = {}
     self.current_animation = ""
     self.angle = angle or 0
-    self.quad = love.graphics.newQuad(0, 0, width, height, atlas:getDimensions())
+    self.quad = love.graphics.newQuad(0, 0, w, h, atlas:getDimensions())
     self.tintColour = colour or { 255, 255, 255, 255 }
 end
 
@@ -59,10 +60,7 @@ function Sprite:add_animations(animations)
 end
 
 function Sprite:rect()
-    local r = { w = self.width * self.scale.x, h = self.height * self.scale.y }
-    r.x = self.pos.x - r.w / 2
-    r.y = self.pos.y - r.h / 2
-    return r
+    return Rect.create_centred(self.pos.x, self.pos.y, self.w * self.scale.x, self.h * self.scale.y)
 end
 
 function Sprite:update(dt)
@@ -73,7 +71,7 @@ end
 
 function Sprite:draw()
     love.graphics.setColor(self.tintColour)
-    love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.width / 2, self.height / 2)
+    love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
 
     local r = self:rect()
     love.graphics.rectangle("line", r.x, r.y, r.w, r.h)

@@ -10,8 +10,21 @@ function V:new(x, y)
     self.y = y or 0
 end
 
+function V.add(vec1, vec2)
+    return V(vec1.x + vec2.x, vec1.y + vec2.y)
+end
+
+function V.subtract(vec1, vec2)
+    return V(vec1.x - vec2.x, vec1.y - vec2.y)
+end
+
 function V.multiply(vec, scal)
     return V(vec.x * scal, vec.y * scal)
+end
+
+function V.divide(vec, scal)
+    assert(scal ~= 0, "Error, cannot divide by zero.")
+    return V(vec.x / scal, vec.y / scal)
 end
 
 function V:magnitude()

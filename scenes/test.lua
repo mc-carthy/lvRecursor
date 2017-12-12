@@ -1,5 +1,6 @@
 local Scene = require("lib.Scene")
 local U = require("lib.Utils")
+local Vector2 = require("lib.Vector2")
 local Player = require("../Player")
 local Enemy = require("../Enemy")
 
@@ -26,8 +27,18 @@ function T:update(dt)
         love.event.quit()
     end
 
-    if U.AABB_col(self.p.spr:rect(), self.e.spr:rect()) then
+    local r1 = self.p.spr:rect()
+    local r2 = self.e.spr:rect()
+
+    if U.AABB_col(r1, r2) then
         self.p.spr.tintColour = U.colour(0, 127, 127, 127)
+
+        local md = r2:minkowski_difference(r1)
+        local msv = md:closest_point_on_bounds(Vector2())
+
+        self.p.spr.pos.x = self.p.spr.pos.x + msv.x
+        self.p.spr.pos.y = self.p.spr.pos.y + msv.y
+
     else
         self.p.spr.tintColour = U.colour(255, 255, 255, 255)
     end
@@ -51,13 +62,13 @@ function T:update(dt)
     --     self.c1.c = U.colour(255, 255, 255, 255)
     -- end
 
-    U.circle_to_circle_col(self.c1, self.c2, 0)
+    -- U.circle_to_circle_col(self.c1, self.c2, 0)
     
-    -- if U.circle_to_circle_col(self.c1, self.c2, 0.75) then
-    --     self.c1.c = U.colour(0, 127, 127, 127)
-    -- else
-    --     self.c1.c = U.colour(255, 255, 255, 255)
-    -- end
+    if U.circle_to_circle_col(self.c1, self.c2, 0.5) then
+        self.c1.c = U.colour(0, 127, 127, 127)
+    else
+        self.c1.c = U.colour(255, 255, 255, 255)
+    end
 end
 
 function T:draw()
