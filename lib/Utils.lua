@@ -74,4 +74,29 @@ function U.circle_to_circle_col(circle1, circle2, mass_ratio)
     end
 end
 
+
+-- Given a bounds point from Rect:closest_point_on_bounds
+-- Return an indication of which sides were involved in the collision
+function U.bounds_point_to_collision_side(bounds_point)
+    local collision_info = { collided = false }
+
+    if bounds_point.x > 0 then
+        collision_info.left = true
+        collision_info.collided = true
+    elseif bounds_point.x < 0 then
+        collision_info.right = true
+        collision_info.collided = true
+    end
+
+    if bounds_point.y > 0 then
+        collision_info.top = true
+        collision_info.collided = true
+    elseif bounds_point.y < 0 then
+        collision_info.bottom = true
+        collision_info.collided = true
+    end
+
+    return collision_info
+end
+
 return U

@@ -66,12 +66,13 @@ function R:closest_point_on_bounds(point)
         bounds_point = Vector2(max.x, point.y)
     end
 
-    -- Then check y-axis
+    -- Then check y-axis, check if on top of something
     if abs(max.y - point.y) < min_dst then
         min_dst = abs(max.y - point.y)
         bounds_point = Vector2(point.x, max.y)
     end
     
+    -- Check if below something
     if abs(self.y - point.y) < min_dst then
         min_dst = abs(self.y - point.y)
         bounds_point = Vector2(point.x, self.y)

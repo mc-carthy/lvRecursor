@@ -120,14 +120,6 @@ function P:update(dt)
 
     self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
 
-    -- if Key:key("up") then
-    --     self.spr.pos.y = self.spr.pos.y - move_speed * dt
-    -- elseif Key:key("down") then
-    --     self.spr.pos.y = self.spr.pos.y + move_speed * dt
-    -- end
-
-    print(jumping)
-
     if jumping and y_before_jump == nil then
         y_vel = -400
         y_before_jump = self.spr.pos.y
@@ -139,6 +131,7 @@ function P:update(dt)
             jumping = false
             self.spr.pos.y = y_before_jump
             y_before_jump = nil
+            self.vx = 0
             self.anim_sm:change("idle")
         end
     end

@@ -34,7 +34,17 @@ function T:update(dt)
         self.p.spr.tintColour = U.colour(0, 127, 127, 127)
 
         local md = r2:minkowski_difference(r1)
+
+        -- Positive x = left side collision
+        -- Negative x = right side collision
+        -- Positive y = Top side collision
+        -- Negative y = Bottom side collision
+        --Points towards the direction in which the rect should move to no longer be colliding
+
         local msv = md:closest_point_on_bounds(Vector2())
+
+        local collision = U.bounds_point_to_collision_side(msv)
+        print(collision.bottom)
 
         self.p.spr.pos.x = self.p.spr.pos.x + msv.x
         self.p.spr.pos.y = self.p.spr.pos.y + msv.y
