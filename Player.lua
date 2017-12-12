@@ -11,8 +11,8 @@ local snd
 
 local idle = Anim(16, 16, 16, 16, 4, 4, 6)
 local walk = Anim(16, 32, 16, 16, { 1, 2, 3, 4, 5, 6 }, 6, 12)
--- local jump = Anim(16, 48, 16, 16, { 1, 2, 3, 4}, 6, 10)
-local jump = Anim(16, 48, 16, 16, { 1 }, 6, 10)
+-- local jump = Anim(16, 48, 16, 16, { 1, 2, 3}, 6, 10, false)
+local jump = Anim(16, 48, 16, 16, 1, 1, 10, false)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
 
@@ -42,23 +42,6 @@ function P:new()
     self.anim_sm = StateMachine(self, "idle")
 end
 
-function P:update(dt)
-    self.anim_sm:update(dt)
-    self.spr:update(dt)
-
-    self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
-
-    if Key:key("up") then
-        self.spr.pos.y = self.spr.pos.y - move_speed * dt
-    elseif Key:key("down") then
-        self.spr.pos.y = self.spr.pos.y + move_speed * dt
-    end
-end
-
-function P:draw()
-    self.spr:draw()
-end
-
 function P:idle_enter(dt)
     self.spr:animate("idle")
 end
@@ -68,6 +51,8 @@ function P:idle(dt)
         self.anim_sm:change("walk")
     elseif Key:key_down("space") then
         self.anim_sm:change("punch")
+    elseif Key:key_down("z") then
+        self.anim_sm:change("jump")
     end
 end
     
@@ -79,6 +64,28 @@ function P:punch_enter(dt)
     self.spr:animate("punch")
     love.audio.stop(snd)        
     love.audio.play(snd)
+end
+
+function P:punch(dt)
+    if self.spr:animation_finished() then
+        self.anim_sm:change("idle")
+    end
+end
+
+local jumping = false
+local y_before_jump = nil
+function P:jump_enter(dt)
+    jumping = true
+    self.spr:animate("jump")
+end
+
+function P:jump(dt)
+    if not jumping then
+        self.anim_sm:change("idle")
+        y_before_jump = nil
+    elseif Key:key_down("space") then
+        self.anim_sm:change("punch")
+    end
 end
 
 function P:walk_enter(dt)
@@ -96,18 +103,49 @@ function P:walk(dt)
         self.vx = 0
         self.anim_sm:change("idle")
     end
+    
     if Key:key_down("space") then
         self.vx = 0
         self.anim_sm:change("punch")
-    -- elseif Key:key_down("up") then
-    --     self.anim_sm:change("jump")
+    elseif Key:key_down("z") then
+        self.anim_sm:change("jump")
     end
 end
 
-function P:punch(dt)
-    if self.spr:animation_finished() then
-        self.anim_sm:change("idle")
+local y_grav = 1000
+local y_vel = 0
+function P:update(dt)
+    self.anim_sm:update(dt)
+    self.spr:update(dt)
+
+    self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
+
+    -- if Key:key("up") then
+    --     self.spr.pos.y = self.spr.pos.y - move_speed * dt
+    -- elseif Key:key("down") then
+    --     self.spr.pos.y = self.spr.pos.y + move_speed * dt
+    -- end
+
+    print(jumping)
+
+    if jumping and y_before_jump == nil then
+        y_vel = -400
+        y_before_jump = self.spr.pos.y
+    elseif jumping then
+        y_vel = y_vel + (y_grav * dt)
+        self.spr.pos.y = self.spr.pos.y + y_vel * dt
+
+        if self.spr.pos.y >= y_before_jump then
+            jumping = false
+            self.spr.pos.y = y_before_jump
+            y_before_jump = nil
+            self.anim_sm:change("idle")
+        end
     end
+end
+
+function P:draw()
+    self.spr:draw()
 end
 
 return P

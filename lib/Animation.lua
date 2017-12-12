@@ -25,8 +25,7 @@ function Anim:new(x_offset, y_offset, cell_width, cell_height, frames, column_si
 end
 
 function Anim:update(dt, quad)
-    if #self.frames <= 1 then
-        return
+    if #self.frames <= 1 then self.done = true return
     elseif self.timer > 0 then
         self.timer = self.timer - dt
         if self.timer <= 0 then
