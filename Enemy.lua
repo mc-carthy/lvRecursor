@@ -13,12 +13,12 @@ local idle = Anim(0, 0, 128, 80, 2, 2, 6)
 local move_speed = 100
 
 
-function Enemy:new()
+function Enemy:new(x, y)
     if enemy_atlas == nil then
         enemy_atlas = love.graphics.newImage("assets/sprites/missile.png")
     end
 
-    self.spr = Sprite(enemy_atlas, 0, 80, 124, 80, 1, 1)
+    self.spr = Sprite(enemy_atlas, x, y, 124, 80, 1, 1)
     self.spr:add_animations({ idle = idle })
     self.spr:animate("idle")
     self.vx = 0

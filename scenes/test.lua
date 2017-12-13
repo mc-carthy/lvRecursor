@@ -1,6 +1,7 @@
 local Scene = require("lib.Scene")
 local U = require("lib.Utils")
 local Vector2 = require("lib.Vector2")
+local Vector3 = require("lib.Vector3")
 local Player = require("../Player")
 local Enemy = require("../Enemy")
 
@@ -9,8 +10,7 @@ local T = Scene:derive("test")
 function T:new(scene_manager)
     T.super.new(self, scene_manager)
     self.p = Player("idle")
-    self.e = Enemy("idle")
-    self.e.spr.pos.x = 300
+    self.e = Enemy(320, 100)
     -- self.e.spr.tintColour = U.colour(191, 0, 0)
     
     self.c1 = { x = 200, y = 200, r = 20, c = U.colour(255)}
@@ -18,6 +18,13 @@ function T:new(scene_manager)
 
     self.em:add(self.p)
     self.em:add(self.e)
+
+    vec_cross = Vector3.cross(Vector3(2, 3, 4), Vector3(5, 6, 7))
+    print(
+        "x: " .. vec_cross.x ..
+        " y: " .. vec_cross.y ..
+        " z: " .. vec_cross.z
+    )
 end
 
 function T:update(dt)
