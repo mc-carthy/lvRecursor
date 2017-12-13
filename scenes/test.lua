@@ -11,7 +11,7 @@ function T:new(scene_manager)
     self.p = Player("idle")
     self.e = Enemy("idle")
     self.e.spr.pos.x = 300
-    self.e.spr.tintColour = U.colour(191, 0, 0)
+    -- self.e.spr.tintColour = U.colour(191, 0, 0)
     
     self.c1 = { x = 200, y = 200, r = 20, c = U.colour(255)}
     self.c2 = { x = 300, y = 200, r = 40, c = U.colour(127)}
