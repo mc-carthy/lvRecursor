@@ -137,6 +137,15 @@ function P:update(dt)
     end
 end
 
+function P:collided(top, bottom, left, right)
+    if bottom then
+        jumping = false
+        y_before_jump = nil
+        self.vx = 0
+        self.anim_sm:change("idle")
+    end
+end
+
 function P:draw()
     self.spr:draw()
 end

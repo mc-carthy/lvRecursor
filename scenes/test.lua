@@ -43,8 +43,16 @@ function T:update(dt)
 
         local msv = md:closest_point_on_bounds(Vector2())
 
-        local collision = U.bounds_point_to_collision_side(msv)
-        print(collision.bottom)
+
+        -- Tell the player which side the collision has occured
+        self.p:collided(
+            md:collides_top(msv),
+            md:collides_bottom(msv),
+            md:collides_left(msv),
+            md:collides_right(msv)
+        )
+
+        if md:collides_bottom(msv) then print("Bottom") end
 
         self.p.spr.pos.x = self.p.spr.pos.x + msv.x
         self.p.spr.pos.y = self.p.spr.pos.y + msv.y

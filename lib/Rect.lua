@@ -71,7 +71,7 @@ function R:closest_point_on_bounds(point)
         min_dst = abs(max.y - point.y)
         bounds_point = Vector2(point.x, max.y)
     end
-    
+
     -- Check if below something
     if abs(self.y - point.y) < min_dst then
         min_dst = abs(self.y - point.y)
@@ -79,6 +79,25 @@ function R:closest_point_on_bounds(point)
     end
     
     return bounds_point
+end
+
+-- Given a bounds point from Rect:closest_point_on_bounds
+-- This returns true if the collision occurs on the right-hand
+-- side of the rect
+function R:collides_right(bounds_point)
+    return bounds_point.x < 0
+end
+
+function R:collides_left(bounds_point)
+    return bounds_point.x > 0
+end
+
+function R:collides_bottom(bounds_point)
+    return bounds_point.y < 0
+end
+
+function R:collides_top(bounds_point)
+    return bounds_point.y > 0
 end
 
 return R
