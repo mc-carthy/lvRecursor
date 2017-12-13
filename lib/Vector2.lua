@@ -36,5 +36,11 @@ function V.normalised(vec)
     return V(vec.x / mag, vec.y / mag)
 end
 
+function V:normalise()
+    local mag = self:magnitude()
+    self.x = self.x / mag
+    self.y = self.y / mag
+end
+
 
 return V

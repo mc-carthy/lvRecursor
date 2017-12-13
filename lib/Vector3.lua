@@ -12,7 +12,11 @@ function V:new(x, y, z)
 end
 
 function V.cross(a, b)
-    return V(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+    if a[z] == nil and b[z] == nil then
+        return V(0, 0, a.x * b.y - a.y * b.x)
+    else
+        return V(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+    end
 end
 
 return V

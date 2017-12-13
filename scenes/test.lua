@@ -3,28 +3,21 @@ local U = require("lib.Utils")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
 local Player = require("../Player")
-local Enemy = require("../Enemy")
+local Missile = require("../Missile")
 
 local T = Scene:derive("test")
 
 function T:new(scene_manager)
     T.super.new(self, scene_manager)
     self.p = Player("idle")
-    self.e = Enemy(320, 100)
-    -- self.e.spr.tintColour = U.colour(191, 0, 0)
+    self.m = Missile(320, 100)
+    self.m:target(self.p.spr)
     
     self.c1 = { x = 200, y = 200, r = 20, c = U.colour(255)}
     self.c2 = { x = 300, y = 200, r = 40, c = U.colour(127)}
 
     self.em:add(self.p)
-    self.em:add(self.e)
-
-    vec_cross = Vector3.cross(Vector3(2, 3, 4), Vector3(5, 6, 7))
-    print(
-        "x: " .. vec_cross.x ..
-        " y: " .. vec_cross.y ..
-        " z: " .. vec_cross.z
-    )
+    self.em:add(self.m)
 end
 
 function T:update(dt)
@@ -35,7 +28,7 @@ function T:update(dt)
     end
 
     local r1 = self.p.spr:rect()
-    local r2 = self.e.spr:rect()
+    local r2 = self.m.spr:rect()
 
     if U.AABB_col(r1, r2) then
         self.p.spr.tintColour = U.colour(0, 127, 127, 127)

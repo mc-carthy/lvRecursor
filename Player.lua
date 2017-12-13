@@ -103,7 +103,7 @@ function P:walk(dt)
         self.vx = 0
         self.anim_sm:change("idle")
     end
-    
+        
     if Key:key_down("space") then
         self.vx = 0
         self.anim_sm:change("punch")
@@ -117,6 +117,12 @@ local y_vel = 0
 function P:update(dt)
     self.anim_sm:update(dt)
     self.spr:update(dt)
+
+    if Key:key("up") then
+        self.spr.pos.y = self.spr.pos.y - move_speed * dt
+    elseif Key:key("down") then
+        self.spr.pos.y = self.spr.pos.y + move_speed * dt
+    end
 
     self.spr.pos.x = self.spr.pos.x + self.vx * move_speed * dt
 

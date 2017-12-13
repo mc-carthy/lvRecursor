@@ -37,6 +37,10 @@ function Sprite:flip_h(flip)
     end
 end
 
+function Sprite:center()
+    return Vector2(self.pos.x + self.w / 2, self.pos.y + self.h / 2)
+end
+
 function Sprite:flip_v(flip)
     if flip then
         self.flip.y = -1
