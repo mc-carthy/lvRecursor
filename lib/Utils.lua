@@ -92,4 +92,12 @@ function U.index_of(list, item)
     return -1
 end
 
+-- Returns a given point rotated about the origin
+function U.rotate_point(x, y, angle, post_rotation_x_offset, post_rotation_y_offset)
+    local x_rot = math.cos(angle) * x - math.sin(angle) * y + post_rotation_x_offset or 0
+    local y_rot = math.sin(angle) * x + math.cos(angle) * y + post_rotation_y_offset or 0
+
+    return x_rot, y_rot
+end
+
 return U
