@@ -74,4 +74,22 @@ function U.circle_to_circle_col(circle1, circle2, mass_ratio)
     end
 end
 
+function U.contains(list, item)
+    for val in pairs(list) do
+        if val == item then
+            return true
+        end
+    end
+    return false
+end
+
+function U.index_of(list, item)
+    for i, val in ipairs(list) do
+        if val == item then
+            return i
+        end
+    end
+    return -1
+end
+
 return U

@@ -6,7 +6,6 @@ local Sprite = require("lib.Sprite")
 local P = Class:derive("Player")
 
 local hero_atlas
-local sprite
 local snd
 
 local idle = Anim(16, 16, 16, 16, 4, 4, 6)

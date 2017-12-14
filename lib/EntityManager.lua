@@ -1,15 +1,7 @@
 local Class = require("lib.Class")
+local U = require("lib.Utils")
 
 local EM = Class:derive("EntityManager")
-
-local function contains(list, item)
-    for val in pairs(list) do
-        if val == item then
-            return true
-        end
-    end
-    return false
-end
 
 local function layer_compare(e1, e2)
     return e1.layer < e2.layer
@@ -34,7 +26,7 @@ function EM:on_exit()
 end
 
 function EM:add(entity)
-    if contains(self.entities, entity) then return end
+    if U.contains(self.entities, entity) then return end
 
     -- Add additional fields that should exist for all entities
     entity.layer = entity.layer or 1

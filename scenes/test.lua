@@ -2,8 +2,10 @@ local Scene = require("lib.Scene")
 local U = require("lib.Utils")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
+local Entity = require("lib.Entity")
 local Player = require("../Player")
 local Missile = require("../Missile")
+local Transform = require("lib.components.Transform")
 
 local T = Scene:derive("test")
 
@@ -16,12 +18,20 @@ function T:new(scene_manager)
     self.c1 = { x = 200, y = 200, r = 20, c = U.colour(255)}
     self.c2 = { x = 300, y = 200, r = 40, c = U.colour(127)}
 
+    local e = Entity()
+    local t = Transform(100, 100, 0)
+    e:add(t)
+    print(e.Transform.pos.x)
+    e:remove(t)
+
     self.em:add(self.p)
     self.em:add(self.m)
+
 end
 
 function T:update(dt)
     self.super.update(self, dt)
+
 
     if Key:key_down("escape") then
         love.event.quit()
