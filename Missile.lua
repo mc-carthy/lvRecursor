@@ -1,10 +1,12 @@
-local Class = require("lib.Class")
+local Entity = require("lib.Entity")
 local Anim = require("lib.Animation")
-local Sprite = require("lib.Sprite")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
 
-local Missile = Class:derive("Missile")
+local Transform = require("lib.components.Transform")
+local Sprite = require("lib.components.Sprite")
+
+local Missile = Entity:derive("Missile")
 
 local missile
 local sprite
@@ -18,13 +20,18 @@ local missile_speed = 50
 
 
 function Missile:new(x, y)
+    Missile.super.new(self)
     if missile == nil then
         missile = love.graphics.newImage("assets/sprites/missile.png")
     end
 
-    self.spr = Sprite(missile, x, y, 124, 80, 1, 1)
-    self.spr:add_animations({ idle = idle })
-    self.spr:animate("idle")
+    local spr = Sprite(missile, 124, 80, 1, 1)
+    spr:add_animations({ idle = idle })
+    spr:animate("idle")
+
+    self:add(Transform(x, y, 0))
+    self:add(spr)
+
     self.vx = 0
 end
 
@@ -34,23 +41,23 @@ end
 
 function Missile:update(dt)
     if target_object ~= nil then
-        local missile_to_target = Vector2.subtract(target_object.pos, self.spr.pos)
+        local missile_to_target = Vector2.subtract(target_object:center(), self.Sprite:center())
         missile_to_target:normalise()
-        local missile_dir = Vector2(math.cos(self.spr.angle), math.sin(self.spr.angle))
+        local missile_dir = Vector2(math.cos(self.Transform.rotation), math.sin(self.Transform.rotation))
         missile_dir:normalise()
 
         local cp = Vector3.cross(missile_dir, missile_to_target)
         
-        self.spr.angle = self.spr.angle + cp.z * rotation_speed * dt * (math.pi / 180)
-        self.spr.pos.x = self.spr.pos.x + (missile_dir.x * missile_speed * dt)
-        self.spr.pos.y = self.spr.pos.y + (missile_dir.y * missile_speed * dt)
+        self.Transform.rotation = self.Transform.rotation + cp.z * rotation_speed * dt * (math.pi / 180)
+        self.Transform.x = self.Transform.x + (missile_dir.x * missile_speed * dt)
+        self.Transform.y = self.Transform.y + (missile_dir.y * missile_speed * dt)
     end
 
-    self.spr:update(dt)
+    self.Sprite:update(dt)
 end
 
 function Missile:draw()
-    self.spr:draw()
+    self.Sprite:draw()
 end
 
 return Missile

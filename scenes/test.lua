@@ -13,7 +13,7 @@ function T:new(scene_manager)
     T.super.new(self, scene_manager)
     self.p = Player("idle")
     self.m = Missile(320, 100)
-    self.m:target(self.p.spr)
+    self.m:target(self.p.Sprite)
     
     self.c1 = { x = 200, y = 200, r = 20, c = U.colour(255)}
     self.c2 = { x = 300, y = 200, r = 40, c = U.colour(127)}
@@ -21,7 +21,7 @@ function T:new(scene_manager)
     local e = Entity()
     local t = Transform(100, 100, 0)
     e:add(t)
-    print(e.Transform.pos.x)
+    print(e.Transform.x)
     e:remove(t)
 
     self.em:add(self.p)
@@ -37,11 +37,11 @@ function T:update(dt)
         love.event.quit()
     end
 
-    local r1 = self.p.spr:rect()
-    local r2 = self.m.spr:rect()
+    local r1 = self.p.Sprite:rect()
+    local r2 = self.m.Sprite:rect()
 
     if U.AABB_col(r1, r2) then
-        self.p.spr.tintColour = U.colour(0, 127, 127, 127)
+        self.p.Sprite.tintColour = U.colour(0, 127, 127, 127)
 
         local md = r2:minkowski_difference(r1)
 
@@ -64,11 +64,11 @@ function T:update(dt)
 
         if md:collides_bottom(msv) then print("Bottom") end
 
-        self.p.spr.pos.x = self.p.spr.pos.x + msv.x
-        self.p.spr.pos.y = self.p.spr.pos.y + msv.y
+        self.p.Transform.x = self.p.Transform.x + msv.x
+        self.p.Transform.y = self.p.Transform.y + msv.y
 
     else
-        self.p.spr.tintColour = U.colour(255, 255, 255, 255)
+        self.p.Sprite.tintColour = U.colour(255, 255, 255, 255)
     end
 
     if Key:key("w") then

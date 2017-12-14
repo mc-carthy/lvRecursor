@@ -5,8 +5,7 @@ local Rect = require("lib.Rect")
 
 local Sprite = Class:derive("Sprite")
 
-function Sprite:new(atlas, x, y, w, h, sx, sy, angle, colour)
-    self.pos = Vector2(x or 0, y or 0)
+function Sprite:new(atlas, w, h, sx, sy, colour)
     self.w = w
     self.h = h
     self.flip = Vector2(1, 1)
@@ -14,9 +13,12 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, angle, colour)
     self.atlas = atlas
     self.animations = {}
     self.current_animation = ""
-    self.angle = angle or 0
     self.quad = love.graphics.newQuad(0, 0, w, h, atlas:getDimensions())
     self.tintColour = colour or { 255, 255, 255, 255 }
+end
+
+function Sprite:on_start()
+    assert(self.entity.Transform ~= nil, "Sprite component requires a Transform component")
 end
 
 function Sprite:animate(anim_name)
@@ -38,7 +40,8 @@ function Sprite:flip_h(flip)
 end
 
 function Sprite:center()
-    return Vector2(self.pos.x + self.w / 2, self.pos.y + self.h / 2)
+    local e = self.entity
+    return Vector2(e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
 end
 
 function Sprite:flip_v(flip)
@@ -64,7 +67,13 @@ function Sprite:add_animations(animations)
 end
 
 function Sprite:rect()
-    return Rect.create_centred(self.pos.x, self.pos.y, self.w * self.scale.x, self.h * self.scale.y)
+    local e = self.entity    
+    return Rect.create_centred(
+        e.Transform.x - (self.w / 2 * self.scale.x), 
+        e.Transform.y - (self.h / 2 * self.scale.y), 
+        self.w * self.scale.x, 
+        self.h * self.scale.y
+    )
 end
 
 function Sprite:update(dt)
@@ -74,8 +83,19 @@ function Sprite:update(dt)
 end
 
 function Sprite:draw()
+    local e = self.entity    
     love.graphics.setColor(self.tintColour)
-    love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
+    love.graphics.draw(
+        self.atlas, 
+        self.quad, 
+        e.Transform.x - (self.w / 2 * self.scale.x), 
+        e.Transform.y - (self.h / 2 * self.scale.y), 
+        e.Transform.rotation, 
+        self.scale.x * self.flip.x, 
+        self.scale.y * self.flip.y, 
+        self.w / 2, 
+        self.h / 2
+    )
 
     local r = self:rect()
     love.graphics.rectangle("line", r.x, r.y, r.w, r.h)

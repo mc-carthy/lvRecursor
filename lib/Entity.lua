@@ -25,7 +25,7 @@ function E:add(component)
         self[component.type] = component
     end
 
-    table.sort(self.components, layer_compare)
+    table.sort(self.components, priority_compare)
 end
 
 function E:remove(component)
