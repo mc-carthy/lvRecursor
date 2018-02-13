@@ -11,7 +11,8 @@ local function priority_compare(c1, c2)
     return c1.priority < c2.priority
 end
 
-function E:add(component)
+-- Name is optional, the component's class type will be used by default
+function E:add(component, name)
     if U.contains(self.components, component) then return end
     -- Add additional fields that should exist for all components
     component.priority = component.priority or 1
@@ -21,7 +22,11 @@ function E:add(component)
 
     self.components[#self.components + 1] = component
 
-    if component.type and type(component.type) == "string" then
+    if name ~= nil and type(name) == "string" and name:len() > 0 then
+        assert(self[name] == nil, "This entity already contains a component of name: " .. name)
+        self[name] = component
+    elseif component.type and type(component.type) == "string" then
+        assert(self[component.type] == nil, "This entity already contains a component of name: " .. component.type)
         self[component.type] = component
     end
 
