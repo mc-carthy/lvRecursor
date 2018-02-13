@@ -1,5 +1,5 @@
 local Entity = require("lib.Entity")
-local StateMachine = require("lib.StateMachine")
+local StateMachine = require("lib.components.StateMachine")
 local Anim = require("lib.Animation")
 local Transform = require("lib.components.Transform")
 local Sprite = require("lib.components.Sprite")
@@ -19,6 +19,7 @@ local punch = Anim(16, 80, 16, 16, 3, 3, 20, false)
 
 local transform
 local sprite
+local machine
 
 local move_speed = 100
 
@@ -44,10 +45,11 @@ function P:new()
     sprite:animate("idle")
 
     transform = Transform(100, 100, 0)
+    machine = StateMachine(self, "idle")
     self:add(transform)
     self:add(sprite)
+    self:add(machine)
     
-    self.anim_sm = StateMachine(self, "idle")
     self.vx = 0
 end
 
@@ -57,11 +59,11 @@ end
     
 function P:idle(dt)
     if Key:key("left") or Key:key("right") then
-        self.anim_sm:change("walk")
+        machine:change("walk")
     elseif Key:key_down("space") then
-        self.anim_sm:change("punch")
+        machine:change("punch")
     elseif Key:key_down("z") then
-        self.anim_sm:change("jump")
+        machine:change("jump")
     end
 end
     
@@ -77,7 +79,7 @@ end
 
 function P:punch(dt)
     if sprite:animation_finished() then
-        self.anim_sm:change("idle")
+        machine:change("idle")
     end
 end
 
@@ -90,10 +92,10 @@ end
 
 function P:jump(dt)
     if not jumping then
-        self.anim_sm:change("idle")
+        machine:change("idle")
         y_before_jump = nil
     elseif Key:key_down("space") then
-        self.anim_sm:change("punch")
+        machine:change("punch")
     end
 end
 
@@ -110,14 +112,14 @@ function P:walk(dt)
         self.vx = 1
     elseif not Key:key("left") and not Key:key("right")then
         self.vx = 0
-        self.anim_sm:change("idle")
+        machine:change("idle")
     end
         
     if Key:key_down("space") then
         self.vx = 0
-        self.anim_sm:change("punch")
+        machine:change("punch")
     elseif Key:key_down("z") then
-        self.anim_sm:change("jump")
+        machine:change("jump")
     end
 end
 
@@ -125,7 +127,6 @@ local y_grav = 1000
 local y_vel = 0
 function P:update(dt)
     P.super.update(self, dt)
-    self.anim_sm:update(dt)
 
     if Key:key("up") then
         transform.y = transform.y - move_speed * dt
@@ -147,7 +148,7 @@ function P:update(dt)
             transform.y = y_before_jump
             y_before_jump = nil
             self.vx = 0
-            self.anim_sm:change("idle")
+            machine:change("idle")
         end
     end
 end
@@ -157,7 +158,7 @@ function P:collided(top, bottom, left, right)
         jumping = false
         y_before_jump = nil
         self.vx = 0
-        self.anim_sm:change("idle")
+        machine:change("idle")
     end
 end
 
